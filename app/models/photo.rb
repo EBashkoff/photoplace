@@ -21,19 +21,22 @@ class Photo
 	end
 
 	def title
-		exifr.title
+		app13 = exifr.app1s[1]
+		return "" unless app13
+    html_doc = Nokogiri::HTML(app13)
+		html_doc.css('title').xpath('alt/li').text
 	end
 
 	def caption
-		exifr.caption
+		exifr.exif.image_description
 	end
 
 	def longitude
-		exifr.longitude
+		exifr.gps.try(:longitude)
 	end
 
 	def latitude
-		exifr.latitude
+		exifr.gps.try(:latitude)
 	end
 
 	def self.photo_paths(album_path)

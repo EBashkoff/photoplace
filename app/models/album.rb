@@ -1,0 +1,45 @@
+class Album
+
+  attr_reader :collection
+  attr_accessor :album_path, :album_name, :album_tooltip
+
+  def initialize(collection, album_path)
+    @collection = collection
+    @album_path = album_path
+  end
+
+  def path
+    album_path
+  end
+
+  def name
+    @name ||= File.basename(album_path)
+  end
+
+  def photos
+    @photos ||=
+      Photo::RESOLUTIONS.reduce({}) do |m, resolution|
+        photo_objects = Photo.photo_paths(album_path)
+                          .send(resolution)
+                          .map do |photo_path|
+          Photo.new(self, photo_path)
+        end
+        m.merge({resolution => photo_objects})
+      end.extend(Photo::Resolutions)
+  end
+
+  def self.album_paths(collection_path)
+    [recurse_album_paths(collection_path)].flatten
+  end
+
+  def self.recurse_album_paths(directory)
+    paths = Dir[File.join(directory, "*")].select do |path|
+      File.directory?(path)
+    end
+    paths.map do |path|
+      return path.gsub("/images", "") if paths && paths.map { |path| File.basename(path) }.include?("images")
+      recurse_album_paths(path)
+    end
+  end
+
+end

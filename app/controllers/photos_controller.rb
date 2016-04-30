@@ -4,7 +4,7 @@ class PhotosController < ApplicationController
   helper_method :photos
 
   def index
-    @photos = Photo.all.map {|photo| File.new(photo)}
+    @photos = Collection.all.last.albums.last.photos.large.map { |photo| photo.path }
     render :index
   end
 end

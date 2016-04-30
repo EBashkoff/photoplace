@@ -28,6 +28,14 @@ class Album
       end.extend(Photo::Resolutions)
   end
 
+	def title
+    @album_title ||= album_xml.xpath("//groupTitle").first.try(:content)
+  end
+
+	def description
+    @album_description ||= album_xml.xpath("//groupDescription").first.try(:content)
+  end
+
   def self.album_paths(collection_path)
     [recurse_album_paths(collection_path)].flatten
   end
@@ -40,6 +48,16 @@ class Album
       return path.gsub("/images", "") if paths && paths.map { |path| File.basename(path) }.include?("images")
       recurse_album_paths(path)
     end
+  end
+
+	private
+
+	def resource_path
+    @resource_path ||= File.join(path, "/resources/mediaGroupData/group.xml")
+  end
+
+	def album_xml
+    @album_xml ||= Nokogiri::XML(IO.read(resource_path))
   end
 
 end

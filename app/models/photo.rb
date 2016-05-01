@@ -6,7 +6,7 @@ class Photo
 		[
 			"house", "scanned photo albums"
 		]
-	RESOLUTIONS = %i(full large medium small thumb)
+	RESOLUTIONS = [:full, :large, :medium, :small, :thumb]
 
 	attr_reader :photos, :album
 	attr_accessor :photo_path
@@ -20,6 +20,10 @@ class Photo
 		photo_path
 	end
 
+	def app_path
+    photo_path.gsub(Rails.application.secrets.base_photo_path, "photos")
+	end
+
 	def title
 		app13 = exifr.app1s[1]
 		return "" unless app13
@@ -27,7 +31,7 @@ class Photo
 		html_doc.css('title').xpath('alt/li').text
 	end
 
-	def caption
+	def description
 		exifr.exif.image_description
 	end
 

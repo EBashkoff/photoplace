@@ -2,16 +2,23 @@
 <html>
 <head>
   <title>Bashkoff Family Website</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-
-
   <%= yield :head %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <h4><strong>Bashkoff Family Website</strong></h4>
+    </div>
+    <div class="navbar-header pull-right">
+      username
+    </div>
+  </div>
+</nav>
 <%= yield %>
-
 </body>
 </html>

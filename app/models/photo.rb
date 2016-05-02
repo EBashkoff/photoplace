@@ -2,10 +2,14 @@ require 'exifr'
 
 class Photo
 	BASE_DIR = Rails.application.secrets.base_photo_path
+
+  # Permissible collection names are these plus any those having a name with a
+  # 4 digit number
 	PERMISSIBLE_COLLECTION_NAMES =
 		[
 			"house", "scanned photo albums"
 		]
+
 	RESOLUTIONS = [:full, :large, :medium, :small, :thumb]
 
 	attr_reader :photos, :album
@@ -74,7 +78,8 @@ class Photo
 	private
 
 	def exifr
-		@exifr ||= EXIFR::JPEG.new(self.photo_path)
+		# Always get EXIF data from the full resolution image
+		@exifr ||= EXIFR::JPEG.new(self.photo_path.gsub(/\/(large|medium|small|thumb)\//, "/full/"))
 	end
 
 end

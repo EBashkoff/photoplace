@@ -12,9 +12,7 @@
 
 <div class="galleria">
   <% photos.each do |photo| %>
-      <%= photo.title %>
-      <%= photo.description %>
-      <img src='<%= photo.app_path %>' data-title="<strong><%= photo.title %></strong>" data-description="<%= photo.description %>">
+      <img src='/<%= photo.app_path %>' data-title="<strong><%= photo.title %></strong>" data-description="<%= photo.description %>">
   <% end %>
 </div>
 
@@ -24,7 +22,7 @@
     imageTimeout: 960000,
     debug: false,
     imageCrop: 'height',
-    dummy: 'themes/olivegreen/images/silhouette_unknown.png',
+    dummy: '<%= image_path("silhouette_unknown.png") %>',
     lightbox: true,
     fullscreenDoubleTap: false,
     thumbnails: 'lazy',

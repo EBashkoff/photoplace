@@ -4,8 +4,9 @@ class PhotosController < ApplicationController
   helper_method :photos
 
   def index
-    @photos = Collection.all.last(2).first.albums.last.photos.large
-    puts photos.map(&:title)
+    @photos = Collection.find(params[:collection_name]).albums.detect do |album|
+      album.name == params[:album_name]
+    end.photos.large
     render :index
   end
 

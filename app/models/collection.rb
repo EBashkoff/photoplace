@@ -18,7 +18,6 @@ class Collection
 
   def albums
     @albums ||= album_paths.map do |outer_album_path|
-      puts outer_album_path
       Album.album_paths(outer_album_path).map do |album_path|
         Album.new(self, album_path)
       end

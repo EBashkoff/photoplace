@@ -16,6 +16,10 @@ class Album
     @name ||= File.basename(album_path)
   end
 
+  def app_path
+    album_path.gsub(Rails.application.secrets.base_photo_path, "photos")
+  end
+
   def photos
     @photos ||=
       Photo::RESOLUTIONS.reduce({}) do |m, resolution|

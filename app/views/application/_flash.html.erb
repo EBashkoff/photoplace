@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-xs-12" style="margin-bottom: -1px">
+    <% flash[:warning] and flash[:warning].each do |msg| %>
+      <div class="alert alert-warning pulsate">
+        <a class="close" data-dismiss="alert">×</a>
+        <%= msg %>
+      </div>
+    <% end %>
+
+    <% flash[:error] and flash[:error].each do |msg| %>
+      <div class="alert alert-danger pulsate">
+        <a class="close" data-dismiss="alert">×</a>
+        <%= msg %>
+      </div>
+    <% end %>
+
+    <% flash[:success] and flash[:success].each do |msg| %>
+      <div class="alert alert-success pulsate">
+        <a class="close" data-dismiss="alert">×</a>
+        <%= msg %>
+      </div>
+    <% end %>
+
+    <% flash[:info] and flash[:info].each do |msg| %>
+      <div class="alert alert-info pulsate">
+        <a class="close" data-dismiss="alert">×</a>
+        <%= msg %>
+      </div>
+    <% end %>
+
+    <% flash[:notice] and flash[:notice].each do |msg| %>
+      <div class="alert pulsate">
+        <a class="close" data-dismiss="alert">×</a>
+        <%= msg %>
+      </div>
+    <% end %>
+  </div>
+</div>

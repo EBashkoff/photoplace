@@ -24,6 +24,14 @@ class Photo
 		photo_path
 	end
 
+	def filename
+		File.basename(photo_path)
+  end
+
+  def filetype
+    File.extname(photo_path).sub(/^\./, "")
+  end
+
 	def app_path
     photo_path.gsub(Rails.application.secrets.base_photo_path, "photos")
 	end
@@ -47,6 +55,22 @@ class Photo
 		exifr.gps.try(:latitude)
 	end
 
+	def width
+		exifr.try(:width)
+	end
+
+	def height
+		exifr.try(:height)
+	end
+
+	def orientation
+		width > height ? "landscape" : "portrait"
+	end
+
+	def size
+		File.size(photo_path)
+	end
+
 	def self.photo_paths(album_path)
 		RESOLUTIONS.reduce({}) do |m, resolution|
 			m.merge({ resolution => Dir[File.join(album_path, "images", resolution.to_s, "*.jpg")] })
@@ -54,6 +78,10 @@ class Photo
 	end
 
 	module Resolutions
+		def objects
+			self
+		end
+
 		def full
       self[:full]
 		end

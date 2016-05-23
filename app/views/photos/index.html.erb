@@ -1,22 +1,30 @@
 <% content_for :head do %>
     <%= stylesheet_link_tag 'galleria' %>
     <%= javascript_include_tag 'galleria' %>
-    <style>
-      .galleria {
-        width: 1000px;
-        height: 700px;
-        background: #000
-      }
-    </style>
 <% end %>
 
-<div class="galleria">
-  <% photos.each do |photo| %>
-      <img src='/<%= photo.app_path %>' data-title="<strong><%= photo.title %></strong>" data-description="<%= photo.description %>">
-  <% end %>
+<% content_for :album_title do %>
+  <%= album.title %>
+<% end %>
+
+<% content_for :album_description do %>
+  <%= album.description %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="galleria-surround">
+      <div class="galleria">
+        <% photos.each do |photo| %>
+            <img src='/<%= photo.app_path %>' data-title="<strong><%= photo.title %></strong>" data-description="<%= photo.description %>">
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
+  adjustGallerySize();
   Galleria.loadTheme('<%= javascript_path "galleria/themes/azur/galleria.azur.min" %>');
   Galleria.run('.galleria', {
     imageTimeout: 960000,
@@ -35,4 +43,7 @@
       });
     }
   });
+  $(window).resize(function () {
+    adjustGallerySize()
+  })
 </script>

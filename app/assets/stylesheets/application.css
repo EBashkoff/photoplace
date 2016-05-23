@@ -12,5 +12,7 @@
  *
 
  *= require_tree ./bootstrap
+ *= require jquery-ui/progressbar.css
+ *= require style
  *= require_self
  */

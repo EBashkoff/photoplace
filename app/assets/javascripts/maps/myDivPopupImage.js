@@ -9,6 +9,7 @@ divpopup.id = "popupimagediv";
 divpopup.style.position = "fixed";
 divpopup.style.height = popupdivheight + "px";
 divpopup.style.width = "auto";
+divpopup.style.height = "auto";
 divpopup.setAttribute("align", "center");
 divpopup.style.display = "none";
 divpopup.style.zIndex = 100;
@@ -16,7 +17,7 @@ divpopup.style.backgroundColor = "#FFFFFF";
 divpopup.style.border = "3px solid black";
 divpopup.style.padding = popupdivpadding + "px";
 
-function magnifypic(filenm, sourcethumb, event) { //  Hover over image thumbnal to display pic popup
+function magnifypic(filenm, event) { //  Hover over image thumbnal to display pic popup
     if (divpopup.firstChild === null) {  //  Test to make sure divpopup is empty before adding an image
         document.getElementsByTagName("body")[0].appendChild(divpopup);
         var domImg = new Image();

@@ -15,6 +15,7 @@ gem 'bcrypt',          '~> 3.1.7'
 gem 'dotenv-rails',    '~> 2.1.1'
 gem 'exifr',           '~> 1.2.4'
 gem 'gon',             '~> 6.0.1'
+gem 'browser',         '~> 2.1.0'
 
 group :development, :test do
   gem 'pry'

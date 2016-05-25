@@ -216,8 +216,8 @@ function generatemarkersfromfiles(initialload, clusterradius) {
 
         // Below code creates infowindow pop-up; first create content string
         slideshowctr = 0;
-        var filenm = googlemarkers[i]['filenames'][0]  // First file name for this marker
-        var contentstring = "<div class=\"info-window\" id=\"slideshowdiv\" style=\"overflow: hidden; width: 230px;#####\">";
+        var filenm = googlemarkers[i]['filenames'][0];  // First file name for this marker
+        var contentstring = "<div class=\"info-window\" id=\"slideshowdiv\" style=\"overflow: hidden; width: 230px;\">";
         contentstring += "<div style=\"height: 30px\">";
         contentstring += "<div style=\"float:left;\"><input type=\"button\" class=\"button-style\" name=\"bback\" value=\"<<\" onclick=\"displayslide(event, " + i + ");\">";
         contentstring += "<input type=\"button\" class=\"button-style\" name=\"back\" value=\"<\" onclick=\"displayslide(event, " + i + ");\">";
@@ -225,12 +225,16 @@ function generatemarkersfromfiles(initialload, clusterradius) {
         contentstring += "<input type=\"button\" class=\"button-style\" name=\"fforward\" value=\">>\" onclick=\"displayslide(event, " + i + ");\"></div>";
         contentstring += "<span id=\"slideshowctrtxt\" style=\"float:right; font-weight: bold;\">1/" + googlemarkers[i]['numberoffiles'] + "</span>";
         contentstring += "</div>";
-        contentstring += "<div id=\"slideshowimagediv\" style=\"border:1px solid black; padding: 4px; padding-bottom: 0px;\" align=center>";
-        if (geotaggedfiles[filenm]['orientation']==='landscape')
-            contentstring += "<img src=\"" + gon.small_photo_path + "/" + filenm + "\" alt=\"No Image\" width=220px></div>";
-        if (geotaggedfiles[filenm]['orientation']==='portrait')
-            contentstring += "<img src=\"" + gon.small_photo_path + "/" + filenm + "\" alt=\"No Image\" height=146px></div>";
-        contentstring += "<div id=\"slideshowcaption\" style=\"white-space:nowrap; overflow:hidden; text-overflow: ellipsis;\"><b>" + geotaggedfiles[filenm]["description"] + "</b><br>Filename: " + filenm + "</div>";
+
+        if (geotaggedfiles[filenm]['orientation']==='landscape') var imgDimension = "width: 220px;\"";
+        if (geotaggedfiles[filenm]['orientation']==='portrait') var imgDimension = "height: 147px;\"";
+        contentstring += "<div id=\"slideshowimagediv\" style=\"border: 1px solid black; padding: 4px; " + imgDimension + " align=center>";
+
+        if (geotaggedfiles[filenm]['orientation']==='landscape') imgDimension = "style=\"max-width: 100% !important;\"";
+        if (geotaggedfiles[filenm]['orientation']==='portrait') imgDimension = "style=\"max-height: 100% !important;\"";
+        contentstring += "<img src=\"" + gon.small_photo_path + "/" + filenm + "\" alt=\"No Image\" " + imgDimension + "></div>";
+
+        contentstring += "<div id=\"slideshowcaption\" style=\"white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\"><b>" + geotaggedfiles[filenm]["description"] + "</b><br>Filename: " + filenm + "</div>";
         contentstring += "</div>";
 
         var infoWindow = new google.maps.InfoWindow({
@@ -274,8 +278,8 @@ function bouncemarker(filenm) {
 }
 
 function takedownprogressoverlay() {
+    $("#progressbarparent").addClass("hidden");
     $("#progressbar").progressbar("destroy");
-    $("progressbarparent").attr("class", "hidden");
 }
 
 function adjustwindowsize(adjustbounds) {
@@ -295,28 +299,21 @@ function displayslide(event, markernumber) {
     if (showdirection === 'forward') slideshowctr++;
     if (showdirection === 'fforward') slideshowctr = totalfilenum - 1;
     slideshowctr %= totalfilenum;
+
     var thisfile = googlemarkers[markernumber]['filenames'][slideshowctr];  //  This file's name
 
     document.getElementById("slideshowctrtxt").innerHTML = (slideshowctr + 1) + "/" + totalfilenum;
-    var slideshowimagedivelement = document.getElementById("slideshowimagediv");
-    slideshowimagedivelement.style.display = "none";
-    if (slideshowimagedivelement.hasChildNodes()) {
-        var tempEle = slideshowimagedivelement.getElementsByTagName("img")[0];
-        // if ("<?php echo $BROWSERTYPE; ?>" === "msie")  {  //IE browser
-        //     slideshowimagedivelement.removeChild(tempEle);
-        // } else {  //  Firefox, Chrome and others
-        //     tempEle.remove();
-        // }
-    }
-    var oImg = slideshowimagedivelement.appendChild(document.createElement("img"));
-    oImg.setAttribute("src", gon.small_photo_path + "/" + thisfile);
-    oImg.setAttribute("alt", "No Image");
-    if (geotaggedfiles[thisfile]['orientation']==='portrait')  oImg.setAttribute("height", "145px");
-    if (geotaggedfiles[thisfile]['orientation']==='landscape') oImg.setAttribute("width", "220px");
-    document.getElementById("slideshowcaption").innerHTML = "<b>" + geotaggedfiles[thisfile]["description"] + "</b><br>Filename: " + thisfile;
-    oImg.onload = function() {
-        slideshowimagedivelement.style.display = "block";
-    }
+
+    var divImg = $("#slideshowimagediv");
+    var oImg = $("#slideshowimagediv img");
+    oImg.attr("src", gon.small_photo_path + "/" + thisfile);
+    oImg.attr("alt", "No Image");
+    if (geotaggedfiles[thisfile]['orientation']==='landscape') divImg.css("width", "220px");
+    if (geotaggedfiles[thisfile]['orientation']==='portrait') divImg.css("height", "147px");
+    oImg.css("max-width", "100%");
+    oImg.css("max-height", "100%");
+
+    $("#slideshowcaption").text = "<b>" + geotaggedfiles[thisfile]["description"] + "</b><br>Filename: " + thisfile;
 }
 
 //Communicates to the web browser to run the initialize function when the web page loads

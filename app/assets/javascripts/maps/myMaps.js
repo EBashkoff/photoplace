@@ -280,6 +280,7 @@ function bouncemarker(filenm) {
 function takedownprogressoverlay() {
     $("#progressbarparent").addClass("hidden");
     $("#progressbar").progressbar("destroy");
+    $("#map-and-list").css("visibility", "visible");
 }
 
 function adjustwindowsize(adjustbounds) {

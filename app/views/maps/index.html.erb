@@ -1,13 +1,12 @@
 <% content_for :head do %>
-    <%#= stylesheet_link_tag 'galleria' %>
     <%= include_gon %>
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{google_maps_key}&v=3.exp&libraries=geometry" %>
     <%= javascript_include_tag 'maps' %>
     <%= stylesheet_link_tag 'maps' %>
 <% end %>
 
-<% content_for :album_title do %>
-    <%= album.title %>
+<% content_for :album_link do %>
+    <%= link_to "Album: #{album.title}", album_path(collection_name, album.name) %>
 <% end %>
 
 <% content_for :album_description do %>
@@ -24,78 +23,75 @@ xmlns="http://www.w3.org/1999/html">
       <span id="progressbartext">Calculating clusters from image GPS coordinates...</span>
     </div>
   </div>
-  <% if geotaggedfiles.length > 0 %>
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <h3>Map for <%= album.title %> Album</h3>
-          <h6 id="mymappageheading">
-            Total geocoded images found: <%= geotaggedfiles.length %>,
-            Zoom level: <span id="zoomlevel"></span>,
-            Cluster Radius: <span id="clusterradius"></span> miles<br/>
-            Click on tag to show images
-          </h6>
-        </div>
-      </div>
-      <div class="row">
-        <div id="map-canvas-parent" class="row" align="center">
-          <!--Actual Google Map goes here-->
-          <div id="map_pane" class="col-xs-8 column-modified" style="border: 1px solid black; color: black; height: 600px;">
-            <div id="map-canvas" style="width: 100%; height: 100%;"></div>
+  <div id="map-and-list" style="visibility: hidden;">
+    <% if geotaggedfiles.length > 0 %>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h3>Map for <%= album.title %> Album</h3>
+            <h6 id="mymappageheading">
+              Total geocoded images found: <%= geotaggedfiles.length %>,
+              Zoom level: <span id="zoomlevel"></span>,
+              Cluster Radius: <span id="clusterradius"></span> miles<br/>
+              Click on tag to show images
+            </h6>
           </div>
-          <div class="col-xs-4 column-modified" style="height: 600px; border-top: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; padding-top: 0px;">
-            <!--<div align="center" width=100% height=28px; style="white-space: nowrap; font-size: small; padding-top: 5px; padding-bottom: 5px;">-->
-            <div class="row">
-              Click on thumbnail or image title to locate on map
+        </div>
+        <div class="row">
+          <div id="map-canvas-parent" class="row" align="center">
+            <!--Actual Google Map goes here-->
+            <div id="map_pane" class="col-xs-8 column-modified" style="border: 1px solid black; color: black; height: 600px;">
+              <div id="map-canvas" style="width: 100%; height: 100%;"></div>
             </div>
-            <div id="filelistonright" class="row" style="height: 570px; overflow: scroll;">
-              <table width=100% style="border-collapse: collapse">
-                <tr>
+            <div class="col-xs-4 column-modified" style="height: 600px; border-top: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; padding-top: 0px;">
+              <!--<div align="center" width=100% height=28px; style="white-space: nowrap; font-size: small; padding-top: 5px; padding-bottom: 5px;">-->
+              <div class="row">
+                Click on thumbnail or image title to locate on map
+              </div>
+              <div id="filelistonright" class="row" style="height: 570px; overflow: scroll;">
+                <table width=100% style="border-collapse: collapse">
                   <!-- Begin looping through the GPS tagged image files-->
                   <% geotaggedfiles.each do |onefile, onefileinfo| %>
-                      <% tempthumbfile = File.join(thumb_photo_path, onefile) %>
-                      <% tempsmallfile = File.join(small_photo_path, onefile) %>
-                      <td onmouseover="demagnifypic()" style="border: 2px solid white; background-color: #9D9248">
-                        <div align="center">
-                          <img src="<%= tempthumbfile %>"
-                          onclick="bouncemarker('<%= onefile %>')"
-                          style="max-width: 96px; max-height: 96px;"
-                          alt="No Thumbnail"
-                          onmouseover="magnifypic('<%= tempsmallfile %>', event)"
-                          onmouseout="demagnifypic()"/>
-                        </div>
-                      </td>
-                      <td class="list_value_wrap" onmouseover="demagnifypic()" style="border:2px solid white; background-color: #9D9248">
-                        <!-- Show file details-->
-                        <div class="tableCell1" align="left">
-                          <a class="auto-style6" onclick="bouncemarker('<%= onefile %>')">
-                            <%= onefileinfo[:description] %>
-                          </a>
-                          <br>
-                          File Name: <%= onefileinfo[:filename] %>
-                          <br>
-                          Latitude: <%= nice_latitude(onefileinfo) %>
-                          <br>
-                          Latitude: <%= nice_longitude(onefileinfo) %>
-                          <br>
-                        </div>
-                      </td>
-                      </tr>
                       <tr>
+                        <% tempthumbfile = File.join(thumb_photo_path, onefile) %>
+                        <% tempsmallfile = File.join(small_photo_path, onefile) %>
+                        <td onmouseover="demagnifypic()" style="border: 2px solid white; background-color: #9D9248">
+                          <div align="center">
+                            <img src="<%= tempthumbfile %>"
+                            onclick="bouncemarker('<%= onefile %>')"
+                            style="max-width: 96px; max-height: 96px;"
+                            alt="No Thumbnail"
+                            onmouseover="magnifypic('<%= tempsmallfile %>', event)"
+                            onmouseout="demagnifypic()"/>
+                          </div>
+                        </td>
+                        <td class="list_value_wrap" onmouseover="demagnifypic()" style="border:2px solid white; background-color: #9D9248">
+                          <!-- Show file details-->
+                          <div class="tableCell1" align="left">
+                            <a class="auto-style6" onclick="bouncemarker('<%= onefile %>')">
+                              <%= onefileinfo[:description] %>
+                            </a>
+                            <br>
+                            File Name: <%= onefileinfo[:filename] %>
+                            <br>
+                            Latitude: <%= nice_latitude(onefileinfo) %>
+                            <br>
+                            Latitude: <%= nice_longitude(onefileinfo) %>
+                            <br>
+                          </div>
+                        </td>
+                      </tr>
                   <% end %>
-                  </tr>
-
-                  </table>
+                </table>
+              </div>
             </div>
-            <br>
           </div>
         </div>
-      </div>
-  <% else %>
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <h3>Sorry, there are no geotagged images in this album</h3>
+    <% else %>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h3>Sorry, there are no geotagged images in this album</h3>
+          </div>
         </div>
-      </div>
-  <% end %>
-</div>
+    <% end %>
+  </div>
 </div>

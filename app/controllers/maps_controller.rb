@@ -1,12 +1,12 @@
 class MapsController < ApplicationController
   attr_reader :album, :geotaggedfiles
   helper_method :album, :google_maps_key, :small_photo_path, :thumb_photo_path,
-                :nice_latitude, :nice_longitude, :geotaggedfiles
+                :nice_latitude, :nice_longitude, :geotaggedfiles, :collection_name
 
   before_action :require_is_user
 
   def index
-    @album = Collection.find(params[:collection_name]).albums.detect do |album|
+    @album = Collection.find(collection_name).albums.detect do |album|
       album.name == params[:album_name]
     end
 
@@ -60,6 +60,10 @@ class MapsController < ApplicationController
   def device_size
     return "small" if params["shorthead"]
     ""
+  end
+
+  def collection_name
+    params[:collection_name]
   end
 
 end

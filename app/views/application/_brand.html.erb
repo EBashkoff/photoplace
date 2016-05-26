@@ -1,4 +1,8 @@
-<%= link_to image_tag("fivestreet.png", alt: "5St", style: "float: left; margin-left: -5px; max-height: 45px; max-width: 45px") %>
-<a class="navbar-brand" href="<%= admin_root_url %>">
-  <small>FiveStreet | AggregateInfo.com</small>
-</a>
+<div class="navbar-header">
+  <%= image_tag "img3.jpg", style: "height: 50px;" %>
+</div>
+<div class="navbar-header">
+  <%= link_to collections_path, class: "navbar-brand" do %>
+      <strong>Bashkoff Family Website</strong>
+  <% end %>
+</div>

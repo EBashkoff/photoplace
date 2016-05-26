@@ -3,12 +3,17 @@
     <%= javascript_include_tag 'galleria' %>
 <% end %>
 
-<% content_for :album_title do %>
-  <%= album.title %>
+<% content_for :album_link do %>
+    <%= link_to "Album: #{album.title}", "#",
+                       :'data-toggle' => "tooltip",
+                       title:         album.description %>
 <% end %>
 
-<% content_for :album_description do %>
-  <%= album.description %>
+
+<% content_for :top_menu_item do %>
+    <li>
+      <%= link_to "Map", map_path(collection_name, album.name) %>
+    </li>
 <% end %>
 
 <div class="container-fluid">

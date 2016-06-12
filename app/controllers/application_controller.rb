@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  helper_method :current_user
+  helper_method :current_user, :gallery_or_album
 
   def current_user
     @current_user ||= User.joins(:sessions).where("wt_session.session_id = ?", cookies['WT_SESSION']).first
@@ -43,5 +43,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def gallery_or_album
+    return "" unless request.referrer
+    /\/album_(gallery|thumbs)\//.match(request.referrer) do |m|
+      m[1].try(:titleize) || ""
+    end.gsub("Thumbs", "Album")
+
+  end
 
 end

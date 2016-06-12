@@ -284,9 +284,18 @@ function takedownprogressoverlay() {
 }
 
 function adjustwindowsize(adjustbounds) {
-    var screenwidth = $(window).width();
     var screenheight = $(window).height();
-    if (gon.device_size === "small") screenheight = screenheight + 36;
+    if (gon.device_size === "small") {
+        $("#filelistonrighthead").hide();
+        $("#mymappageheading").hide();
+        $("#map-pane").css("height", screenheight - 120);
+        $("#photo-pane").css("height", screenheight - 120);
+        $("#filelistonright").css("height", screenheight - 126);
+    } else {
+        $("#map-pane").css("height", screenheight - 156);
+        $("#photo-pane").css("height", screenheight - 156);
+        $("#filelistonright").css("height", screenheight - 180)
+    }
     if (adjustbounds && map && bounds) map.fitBounds(bounds);  //  Set map view appropriate to all markers only on windowsize
 }
 

@@ -5,12 +5,24 @@ class PhotosController < ApplicationController
 
   before_action :require_is_user
 
-  def index
+  def gallery
     @album = Collection.find(collection_name).albums.detect do |album|
       album.name == params[:album_name]
     end
-
+    gon.starting_image_index =
+      if params[:filename]
+        album.photo_index(params[:filename])
+      else
+        0
+      end
     @photos = album.photos.large
+  end
+
+  def index
+    @album  = Collection.find(collection_name).albums.detect do |album|
+      album.name == params[:album_name]
+    end
+    @photos = album.photos.small
   end
 
   def show

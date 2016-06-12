@@ -54,6 +54,14 @@ class Album
     end
   end
 
+  def photo_index(filename)
+    Photo
+      .photo_paths(self.path)
+      .large
+      .each_with_index
+      .detect{ |one_pic_path, index| one_pic_path.end_with?(filename) }.last
+  end
+
 	private
 
 	def resource_path

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-
+ruby '2.3.0'
 
 gem 'rails',           '4.2.0'
 gem 'mysql2',          '~> 0.3.18'
@@ -16,6 +16,7 @@ gem 'dotenv-rails',    '~> 2.1.1'
 gem 'exifr',           '~> 1.2.4'
 gem 'gon',             '~> 6.0.1'
 gem 'browser',         '~> 2.1.0'
+gem 'rubyzip',         '~> 1.1.6'
 
 group :development, :test do
   gem 'pry'

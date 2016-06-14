@@ -11,7 +11,8 @@
 /log/*
 !/log/.keep
 /tmp
-config/secrets.yml
-config/database.yml
-.idea/*
-db/gallery/*
+/.env
+/.env.test
+/.env.production
+/.idea/
+/db/gallery/

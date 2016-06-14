@@ -1,0 +1,22 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: Eric
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: localhost
+
+development:
+  <<: *default
+  database: photoplace_development
+
+test:
+  <<: *default
+  database: photoplace_test
+
+production:
+  <<: *default
+  database: s2p5p3c4_webtrees
+  username: s2p5p3c4_wtuser
+  host: bashkoff-family.com
+  password: <%= ENV['DB_PASSWORD'] %>

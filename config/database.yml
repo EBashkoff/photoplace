@@ -20,3 +20,4 @@ production:
   username: s2p5p3c4_wtuser
   host: bashkoff-family.com
   password: <%= ENV['DB_PASSWORD'] %>
+  port: 3306

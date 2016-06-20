@@ -16,6 +16,10 @@ class Album
     @name ||= File.basename(album_path)
   end
 
+  def app_path
+    album_path.gsub(Rails.application.secrets.base_photo_path, "photos")
+  end
+
   def photos
     @photos ||=
       Photo::RESOLUTIONS.reduce({}) do |m, resolution|
@@ -48,6 +52,14 @@ class Album
       return path.gsub("/images", "") if paths && paths.map { |path| File.basename(path) }.include?("images")
       recurse_album_paths(path)
     end
+  end
+
+  def photo_index(filename)
+    Photo
+      .photo_paths(self.path)
+      .large
+      .each_with_index
+      .detect{ |one_pic_path, index| one_pic_path.end_with?(filename) }.last
   end
 
 	private

@@ -1,0 +1,48 @@
+<% content_for :head do %>
+    <script type="text/javascript">
+      $(document).ready(function () {
+            $('ul.tree').hide();
+            $('.tree-toggle').click(function () {
+                  $('ul.tree').hide(200);
+                  $(this).parent().children('ul.tree').toggle(200)
+                }
+            )
+          }
+      );
+    </script>
+<% end %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 column-modified">
+      <div class="well">
+        <ul class="nav nav-list">
+          <% collections.each do |collection| %>
+              <li>
+                <label class="tree-toggle nav-header"><%= collection.name %></label>
+                <ul class="nav nav-list tree">
+                  <% collection.albums.each do |album| %>
+                      <li>
+                        <a title href="<%= album_thumbs_path(collection.name, album.name) %>"><%= album.name %></a>
+                      </li>
+                  <% end %>
+                </ul>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-2 column-modified">
+      <div class="well">
+        This is a column
+      </div>
+    </div>
+
+    <div class="col-md-7 column-modified">
+      <div class="well">
+        <h2 class="text-center">Welcome to our Website!</h2><hr/>
+        <%= image_tag 'WebCollage.jpg', style: "width: 100%;" %>
+      </div>
+    </div>
+  </div>
+</div>

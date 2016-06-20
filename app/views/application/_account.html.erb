@@ -1,0 +1,21 @@
+<ul class="nav ace-nav">
+  <li class="grey user-profile">
+    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+      <span class="user-info">
+        <small>Welcome,</small>
+        <%= "current_admin.name" %>
+      </span>
+
+      <i class="icon-caret-down"></i>
+    </a>
+
+    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+      <li>
+        <%= link_to collections_path do %>
+          <i class="icon-off"></i>
+          Logout
+        <% end %>
+      </li>
+    </ul>
+  </li>
+</ul>

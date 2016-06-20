@@ -1,0 +1,70 @@
+<%= stylesheet_link_tag 'downloads' %>
+<%= javascript_include_tag 'downloads' %>
+
+<% content_for :album_link do %>
+    <%= link_to "#{gallery_or_album}: #{album.title}",
+                request.referrer,
+                :'data-toggle' => "tooltip",
+                title:         album.description
+    %>
+<% end %>
+
+<% content_for :top_menu_item do %>
+    <li>
+      <%= link_to "Map", map_path(collection_name, album.name) %>
+    </li>
+<% end %>
+
+<div class="container-fluid galleria-surround">
+  <div class="row row-centered galleria-surround">
+    <div class="col-md-12">
+      <div id="select-choices" class="well navbar-custom">
+        <span>Select the images you wish to download, then click here:&nbsp;&nbsp;</span>
+        <%= link_to "Download", "#", class: "btn btn-xs btn-default", onclick: "presentDownloadResolutions()" %>
+      </div>
+      <div id="resolution-choices" class="well navbar-custom hidden">
+        <span>Choose a resolution:&nbsp;&nbsp;</span>
+        <%= link_to "Small", "#", class: "btn btn-xs btn-default",
+                    onclick:             "chosenDownloadResolution('small')"
+        %>
+        <%= link_to "Medium", "#", class: "btn btn-xs btn-default",
+                    onclick:              "chosenDownloadResolution('medium')"
+        %>
+        <%= link_to "Large", "#", class: "btn btn-xs btn-default",
+                    onclick:             "chosenDownloadResolution('large')"
+        %>
+        <%= link_to "Full", "#", class: "btn btn-xs btn-default",
+                    onclick:            "chosenDownloadResolution('full')"
+        %>
+      </div>
+      <div id="do-download-display" class="well navbar-custom hidden">
+        <span>Proceed with download:&nbsp;&nbsp;</span>
+        <%= link_to "Download",
+                    downloads_url(format: :zip),
+                    method:  :get,
+                    class:   "btn btn-xs btn-default",
+                    onclick: "restoreOriginalDownloadQuestion()",
+                    id:      "download-link"
+        %>
+        <%= link_to "Cancel",
+                    downloads_path,
+                    class: "btn btn-xs btn-default",
+                    onclick: "restoreOriginalDownloadQuestion()",
+                    remote: true
+        %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row-centered">
+  <% photos.each do |photo| %>
+      <div class="thumbnail col-centered">
+        <img src='/<%= photo.app_path %>' onclick="toggle()" id="<%= photo.filename %>">
+      </div>
+  <% end %>
+</div>
+
+

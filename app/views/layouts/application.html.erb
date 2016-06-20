@@ -1,14 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Photoplace</title>
-  <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%#= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <title>Bashkoff Family Website</title>
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= yield :head %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<nav class="navbar navbar-custom" role="navigation">
+  <%= render partial: "brand" %>
+  <div class="collapse navbar-collapse pull-right">
+    <ul class="nav navbar-nav">
+      <li>
+        <%= yield :album_link %>
+      </li>
+      <%= yield :top_menu_item %>
+      <li>
+        <%= link_to "Home", collections_path %>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <span><%= current_user.real_name %></span>
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <%= link_to "Logout", logout_path, method: :delete %>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<%= render partial: 'flash' %>
 <%= yield %>
-
 </body>
 </html>

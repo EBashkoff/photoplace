@@ -1,0 +1,42 @@
+@import "../lib/color.css.scss";
+
+/*http://www.minimit.com/articles/solutions-tutorials/bootstrap-3-responsive-centered-columns*/
+/* centered columns styles */
+.row-centered {
+  text-align: center;
+}
+
+.col-centered {
+  display: inline-block;
+  float: none;
+  /* reset the text-align */
+  text-align: left;
+  /* inline-block space fix */
+  /*margin-right: 0px;*/
+}
+
+.thumbnail {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border: solid black 1px;
+  border-radius: 2px;
+}
+
+.thumbnail img {
+  object-fit: cover;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.well {
+  padding: 10px;
+  border: solid black 1px;
+}

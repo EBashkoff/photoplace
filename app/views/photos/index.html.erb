@@ -1,3 +1,30 @@
-<% @photos.each do |photo| %>
-  <img src="<%= photo %>"/><br />
+<%= stylesheet_link_tag 'downloads' %>
+
+<% content_for :album_link do %>
+    <%= link_to "Gallery: #{album.title}",
+                album_gallery_path(collection_name, album.name),
+                :'data-toggle' => "tooltip",
+                title:         album.description
+    %>
 <% end %>
+
+<% content_for :top_menu_item do %>
+    <li>
+      <%= link_to "Map", map_path(collection_name, album.name) %>
+    </li>
+    <li>
+      <%= link_to "Downloads", downloads_path(collection_name, album.name) %>
+    </li>
+<% end %>
+
+<div class="row-centered">
+  <% photos.each do |photo| %>
+      <div class="thumbnail col-centered">
+        <a href="<%= album_gallery_path(filename: photo.filename) %>">
+          <img src='/<%= photo.app_path %>'>
+        </a>
+      </div>
+  <% end %>
+</div>
+
+

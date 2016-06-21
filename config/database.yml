@@ -16,8 +16,8 @@ test:
 
 production:
   <<: *default
-  database: s2p5p3c4_webtrees
-  username: s2p5p3c4_wtuser
-  host: bashkoff-family.com
+  database: wt_webtrees
+  username: wt_user
+  host: localhost
   password: <%= ENV['DB_PASSWORD'] %>
   port: 3306

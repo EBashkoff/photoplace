@@ -16,3 +16,5 @@
 /.env.production
 /.idea/
 /db/gallery/
+/.ruby-version
+/.ruby-gemset

@@ -17,6 +17,8 @@ gem 'exifr',           '~> 1.2.4'
 gem 'gon',             '~> 6.0.1'
 gem 'browser',         '~> 2.1.0'
 gem 'rubyzip',         '~> 1.1.6'
+gem 'puma',            '~> 3.4.0', group: :production
+# gem 'rack-cache',      '1.6.1',    group: :production
 
 group :development, :test do
   gem 'pry'

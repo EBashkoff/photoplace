@@ -2,22 +2,18 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: Eric
+  host: localhost
+  port: 3306
+  database: wt_webtrees
+  username: wt_user
   password: <%= ENV['DB_PASSWORD'] %>
   host: localhost
 
 development:
   <<: *default
-  database: photoplace_development
 
 test:
   <<: *default
-  database: photoplace_test
 
 production:
   <<: *default
-  database: wt_webtrees
-  username: wt_user
-  host: localhost
-  password: <%= ENV['DB_PASSWORD'] %>
-  port: 3306

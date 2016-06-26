@@ -29,6 +29,7 @@ class MapsController < ApplicationController
     gon.small_photo_path = small_photo_path
     gon.device_size      = device_size
     gon.browser          = browser.name
+    gon.pin_icon_img     = pin_icon_images
 
     render :index
   end
@@ -64,6 +65,16 @@ class MapsController < ApplicationController
 
   def collection_name
     params[:collection_name]
+  end
+
+  def pin_icon_images
+    %i(small medium large).reduce({}) do |m, size|
+      m.merge(
+        {
+          size.to_s => ActionController::Base.helpers.asset_path("icon6#{size.to_s[0]}.png")
+        }
+      )
+    end
   end
 
 end

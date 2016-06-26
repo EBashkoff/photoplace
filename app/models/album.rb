@@ -46,7 +46,7 @@ class Album
 
   def self.recurse_album_paths(directory)
     paths = Dir[File.join(directory, "*")].select do |path|
-      File.directory?(path)
+      File.directory?(path) && !path.end_with?("/resources")
     end
     paths.map do |path|
       return path.gsub("/images", "") if paths && paths.map { |path| File.basename(path) }.include?("images")

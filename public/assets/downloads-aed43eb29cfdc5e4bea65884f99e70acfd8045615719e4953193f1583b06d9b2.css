@@ -1,4 +1,71 @@
+/* line 29, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/lib/color.css.scss */
+.ignored {
+  font-size: inherit;
+}
+
+/*http://www.minimit.com/articles/solutions-tutorials/bootstrap-3-responsive-centered-columns*/
+/* centered columns styles */
+/* line 5, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/downloads/style.css.scss */
+.row-centered {
+  text-align: center;
+}
+
+/* line 9, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/downloads/style.css.scss */
+.col-centered {
+  display: inline-block;
+  float: none;
+  /* reset the text-align */
+  text-align: left;
+  /* inline-block space fix */
+  /*margin-right: 0px;*/
+}
+
+/* line 18, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/downloads/style.css.scss */
+.thumbnail {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border: solid black 1px;
+  border-radius: 2px;
+}
+
+/* line 27, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/downloads/style.css.scss */
+.thumbnail img {
+  object-fit: cover;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+/* line 39, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/downloads/style.css.scss */
+.well {
+  padding: 10px;
+  border: solid black 1px;
+}
+/* line 29, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/lib/color.css.scss */
+.ignored {
+  font-size: inherit;
+}
+
+/* line 3, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/galleria/style.css.scss */
+.galleria {
+  width: 900px;
+  height: 600px;
+  background: #9D9248;
+}
+
+/* line 9, /Users/Eric/Documents/EricRails/photoplace/app/assets/stylesheets/galleria/style.css.scss */
+.galleria-surround {
+  background-color: #9D9248;
+}
 /* Galleria Azur Theme 2013-11-04 | http://galleria.io/license/ | (c) Aino */
+
 
 #galleria-loader{height: 1px}
 
@@ -20,10 +87,10 @@
     left: 0;
     right: 0;
     bottom: 40px;
-    background:#000 url(../../../../../../public/bg.png);
+    background:#000 url(../bg.png);
 }
 .galleria-theme-azur.light .galleria-stage {
-    background:#181818 url(../../../../../../public/bg.png);
+    background:#181818 url(../bg.png);
 }
 .galleria-theme-azur .galleria-bar {
     height: 40px;
@@ -33,7 +100,7 @@
     right: 0;
     z-index: 3;
     overflow: hidden;
-    background:#141414 url(../../../../../../public/bg.png);
+    background:#141414 url(../bg.png);
 }
 .galleria-theme-azur.light .galleria-bar {
     background:#fff;
@@ -59,25 +126,25 @@
     outline-width: 0;
 }
 .galleria-theme-azur .galleria-play {
-    background-image: url(../../../../../../public/playpause-white.png);
+    background-image: url(../playpause-white.png);
     background-position: 50% 11px;
 }
 .galleria-theme-azur.light .galleria-play {
-    background-image: url(../../../../../../public/playpause-neg.png);
+    background-image: url(../playpause-neg.png);
 }
 .galleria-theme-azur .galleria-play.pause {
     background-position: 50% -89px;
 }
 .galleria-theme-azur .galleria-fullscreen {
     left: 42px;
-    background-image: url(../../../../../../public/fscreen.png);
+    background-image: url(../fscreen.png);
     background-position: 50% 11px;
 }
 .galleria-theme-azur.fullscreen .galleria-fullscreen {
     background-position: 50% -89px;
 }
 .galleria-theme-azur.light .galleria-fullscreen {
-    background-image: url(../../../../../../public/fscreen-neg.png);
+    background-image: url(../fscreen-neg.png);
     left: 41px;
 }
 .galleria-theme-azur .galleria-play.playing { background-position: 10px -91px }
@@ -180,7 +247,7 @@ body .galleria-theme-azur .galleria-tooltip {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background: url(../../../../../../public/bgie.png);
+    background: url(../bgie.png);
     background: rgba(0,0,0,.7);
     padding: 3px 8px;
     font-size: 10px;
@@ -212,7 +279,7 @@ body .galleria-theme-azur .galleria-tooltip {
     width: 32px;
     height: 5px;
     background: rgba(255,255,255,.2);
-    background: url(../../../../../../public/20.png);
+    background: url(../20.png);
     position: absolute;
     top: 10px;
     right: 10px;
@@ -233,14 +300,14 @@ body .galleria-theme-azur .galleria-tooltip {
     right: 0;
     bottom: 0;
     color: #fff;
-    background: url(../../../../../../public/bgie.png);
-    background: url(../../../../../../public/bg.png) rgba(0,0,0,.6);
+    background: url(../bgie.png);
+    background: url(../bg.png) rgba(0,0,0,.6);
     z-index:2;
 }
 
 .galleria-theme-azur.light .galleria-info {
     color:#fff;
-    background:url(../../../../../../public/bg.png) rgba(0, 0, 0, .2);
+    background:url(../bg.png) rgba(0, 0, 0, .2);
 }
 
 .galleria-theme-azur .galleria-info.toggler {
@@ -291,7 +358,7 @@ body .galleria-theme-azur .galleria-tooltip {
     margin: -24px 0 0 -24px;
     z-index: 2;
     display: none;
-    background: #000 url(../../../../../../public/loader.gif) no-repeat 50% 50%;
+    background: #000 url(../loader.gif) no-repeat 50% 50%;
     opacity: .6;
     filter: alpha(opacity=60);
     -moz-border-radius: 6px;
@@ -316,20 +383,20 @@ body .galleria-theme-azur .galleria-tooltip {
     position: absolute;
     left: 20px;
     z-index: 2;
-    background: url(../../../../../../public/left.png) 50% 50% no-repeat;
+    background: url(../left.png) 50% 50% no-repeat;
     opacity: 0;
 }
 .galleria-theme-azur.smallarrows .galleria-image-nav-left {
-    background-image: url(../../../../../../public/left-small.png);
+    background-image: url(../left-small.png);
 }
 .galleria-theme-azur .galleria-image-nav-right {
     left: auto;
     right: 20px;
-    background-image: url(../../../../../../public/right.png);
+    background-image: url(../right.png);
     z-index: 2;
 }
 .galleria-theme-azur.smallarrows .galleria-image-nav-right {
-    background-image: url(../../../../../../public/right-small.png);
+    background-image: url(../right-small.png);
 }
 .galleria-theme-azur.notouch .galleria-image-nav-left:hover,
 .galleria-theme-azur.touch .galleria-image-nav-left:active { opacity: .7!important }
@@ -340,7 +407,7 @@ body .galleria-theme-azur .galleria-tooltip {
 .galleria-theme-azur .galleria-thumb-nav-right {
     cursor: pointer;
     display: none;
-    background: url(../../../../../../public/thumbleft-white.png) 50% 50%;
+    background: url(../thumbleft-white.png) 50% 50%;
     position: absolute;
     left: 3px;
     top: 3px;
@@ -351,17 +418,17 @@ body .galleria-theme-azur .galleria-tooltip {
     z-index: 3;
 }
 .galleria-theme-azur.light .galleria-thumb-nav-left {
-    background-image: url(../../../../../../public/thumbleft-neg.png);
+    background-image: url(../thumbleft-neg.png);
 }
 .galleria-theme-azur .galleria-thumb-nav-right {
     border-right: none;
     right: 3px;
     *right: 1px;
     left: auto;
-    background: url(../../../../../../public/thumbright-white.png) 50% 50%;
+    background: url(../thumbright-white.png) 50% 50%;
 }
 .galleria-theme-azur.light .galleria-thumb-nav-right {
-    background-image: url(../../../../../../public/thumbright-neg.png);
+    background-image: url(../thumbright-neg.png);
 }
 .galleria-theme-azur .galleria-thumbnails-container .disabled {
     opacity: .2;
@@ -402,4 +469,11 @@ body .galleria-theme-azur .galleria-tooltip {
 
 .galleria-theme-azur.videoplay .galleria-info,
 .galleria-theme-azur.videoplay .galleria-counter{display:none!important;}
+
+/*
+
+
+
+
+ */
 

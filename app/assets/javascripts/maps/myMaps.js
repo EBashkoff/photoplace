@@ -148,7 +148,7 @@ function generatemarkersfromfiles(initialload, clusterradius) {
             var marker = new google.maps.Marker({
                 position: markerLatLng,
                 map: map,
-                icon: '/images/icon6s.png',
+                icon: gon.pin_icon_img['small'],
                 animation: null,
                 filenames: filearray,
                 numberoffiles: 1,
@@ -172,9 +172,9 @@ function generatemarkersfromfiles(initialload, clusterradius) {
                     marker['numberoffiles'] = marker['numberoffiles'] + 1;
                     marker.setTitle("");
                     if (marker['numberoffiles'] > 9) {
-                        marker.setIcon('/images/icon6m.png');
+                        marker.setIcon(gon.pin_icon_img['medium']);
                     } else if (marker['numberoffiles'] > 99) {
-                        marker.setIcon('/images/icon6l.png');
+                        marker.setIcon(gon.pin_icon_img['large']);
                     }
                     geotaggedfiles[filenametocompare]['indexintogooglemarkers'] = googlemarkerscount;  // Mark file in file source array as accounted for
                     tempgtfiles.splice(tempgtfiles.indexOf(filenametocompare),1);   //  Remove file from compare list

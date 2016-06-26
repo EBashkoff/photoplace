@@ -16,7 +16,7 @@
     <div class="col-md-3 column-modified">
       <div class="well">
         <ul class="nav nav-list">
-          <% collections.each do |collection| %>
+          <% collections.sort_by(&:name).each do |collection| %>
               <li>
                 <label class="tree-toggle nav-header"><%= collection.name %></label>
                 <ul class="nav nav-list tree">

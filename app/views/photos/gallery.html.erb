@@ -1,6 +1,7 @@
 <% content_for :head do %>
     <%= stylesheet_link_tag 'galleria' %>
     <%= javascript_include_tag 'galleria' %>
+    <%= javascript_include_tag 'galleria_theme' %>
     <%= include_gon %>
 <% end %>
 
@@ -34,8 +35,8 @@
 </div>
 
 <script>
-  adjustGallerySize();
-  Galleria.loadTheme('<%= javascript_path "galleria/themes/azur/galleria.azur.min" %>');
+//  adjustGallerySize();
+  Galleria.loadTheme(<%= asset_path("galleria_theme", type: :javascript) %>);
   Galleria.run('.galleria', {
     imageTimeout: 960000,
     show: gon.starting_image_index,

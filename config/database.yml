@@ -4,16 +4,22 @@ default: &default
   pool: 5
   host: localhost
   port: 3306
-  database: wt_webtrees
-  username: wt_user
-  password: <%= ENV['DB_PASSWORD'] %>
   host: localhost
 
 development:
   <<: *default
+  database: photoplace_development
+  username: Eric
+  password: <%= ENV['DB_PASSWORD'] %>
 
 test:
   <<: *default
+  database: photoplace_test
+  username: Eric
+  password: <%= ENV['DB_PASSWORD'] %>
 
 production:
   <<: *default
+  database: wt_webtrees
+  username: wt_user
+  password: <%= ENV['DB_PASSWORD'] %>

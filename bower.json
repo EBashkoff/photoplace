@@ -1,0 +1,7 @@
+// bower.json
+{
+  "name": "galleria",
+  "dependencies": {
+    "galleria.io": "~1.4.2"
+  }
+}

@@ -1,7 +1,7 @@
 <% content_for :head do %>
-    <%= stylesheet_link_tag 'galleria' %>
+    <%= stylesheet_link_tag '/galleria/themes/azur/galleria.azur.css' %>
     <%= javascript_include_tag 'galleria' %>
-    <%= javascript_include_tag 'galleria_theme' %>
+    <%= javascript_include_tag '/galleria/galleria-1.4.2.min.js' %>
     <%= include_gon %>
 <% end %>
 
@@ -35,17 +35,17 @@
 </div>
 
 <script>
-//  adjustGallerySize();
-  Galleria.loadTheme(<%= asset_path("galleria_theme", type: :javascript) %>);
+  adjustGallerySize();
+  Galleria.loadTheme("/galleria/themes/azur/galleria.azur.min.js");
   Galleria.run('.galleria', {
     imageTimeout: 960000,
     show: gon.starting_image_index,
-    debug: false,
+    debug: true,
     imageCrop: 'height',
-    dummy: '<%= image_path("silhouette_unknown.png") %>',
+//    dummy: '<%= image_path("silhouette_unknown.png") %>',
     lightbox: true,
     fullscreenDoubleTap: false,
-    thumbnails: 'lazy',
+    thumbnails: 'none',
     extend: function () {
       this.lazyLoadChunks(10);
       this.setPlaytime(3000);

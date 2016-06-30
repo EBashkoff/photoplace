@@ -15,5 +15,4 @@ Rails.application.config.assets.precompile += %w( downloads.js )
 Rails.application.config.assets.precompile += %w( maps.css )
 Rails.application.config.assets.precompile += %w( downloads.css )
 Rails.application.config.assets.precompile += %w( galleria.js )
-Rails.application.config.assets.precompile += %w( galleria_theme.js )
 

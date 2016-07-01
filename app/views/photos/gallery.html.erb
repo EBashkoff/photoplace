@@ -42,12 +42,11 @@
     show: gon.starting_image_index,
     debug: true,
     imageCrop: 'height',
-//    dummy: '<%= image_path("silhouette_unknown.png") %>',
+    dummy: '<%= image_path("silhouette_unknown.png") %>',
     lightbox: true,
-    fullscreenDoubleTap: false,
-    thumbnails: 'none',
+    fullscreenDoubleTap: true,
+    thumbnails: false,
     extend: function () {
-      this.lazyLoadChunks(10);
       this.setPlaytime(3000);
       this.attachKeyboard({
         left: this.prev,

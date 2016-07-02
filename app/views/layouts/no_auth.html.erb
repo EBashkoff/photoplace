@@ -3,30 +3,29 @@
 <head>
   <title>Bashkoff Family Website</title>
   <link rel="shortcut icon" href="<%= asset_path('favicon.png') %>">
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag 'no_auth', media: 'all' %>
+  <%= javascript_include_tag 'no_auth' %>
   <%= yield :head %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-<nav class="navbar navbar-custom" role="navigation">
-  <div class="navbar-header">
-    <%= image_tag "img3.jpg", style: "height: 50px;" %>
+<div class="container">
+  <div class="sub-container">
+    <div class="navbar navbar-custom navbar-static-top" role="navigation">
+      <div class="navbar-header">
+        <%= render partial: "brand" %>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <%= render partial: 'flash' %>
+    <%= yield %>
   </div>
-  <div class="navbar-header">
-    <%= link_to collections_path, class: "navbar-brand" do %>
-      <strong>Bashkoff Family Website</strong>
-    <% end %>
-  </div>
-  <div class="collapse navbar-collapse pull-right">
-    <ul class="nav navbar-nav">
-      <li>
-        <a href="#">Login</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-<%= render partial: 'flash' %>
-<%= yield %>
+</div>
 </body>
 </html>

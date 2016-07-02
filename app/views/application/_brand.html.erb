@@ -1,8 +1,6 @@
-<div class="navbar-header">
+<%= link_to collections_path, class: "navbar-left hidden-xs" do %>
   <%= image_tag "img3.jpg", style: "height: 50px;" %>
-</div>
-<div class="navbar-header">
-  <%= link_to collections_path, class: "navbar-brand" do %>
-      <strong>Bashkoff Family Website</strong>
-  <% end %>
-</div>
+<% end %>
+<%= link_to collections_path, class: "navbar-brand pull-left" do %>
+    <strong>Bashkoff Family Website</strong>
+<% end %>

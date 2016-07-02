@@ -13,12 +13,13 @@
 <% end %>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-3 column-modified">
+    <div class="col-md-5 column-modified text-center center-panel">
       <div class="well">
+      <h3>Albums</h3><hr/>
         <ul class="nav nav-list">
           <% collections.sort_by(&:name).each do |collection| %>
               <li>
-                <label class="tree-toggle nav-header"><%= collection.name %></label>
+                <label class="tree-toggle nav-header" style="font-size: x-large"><%= collection.name %></label>
                 <ul class="nav nav-list tree">
                   <% collection.albums.each do |album| %>
                       <li>
@@ -32,16 +33,10 @@
       </div>
     </div>
 
-    <div class="col-md-2 column-modified">
-      <div class="well">
-        This is a column
-      </div>
-    </div>
-
-    <div class="col-md-7 column-modified">
-      <div class="well">
-        <h2 class="text-center">Welcome to our Website!</h2><hr/>
-        <%= image_tag 'WebCollage.jpg', style: "width: 100%;" %>
+    <div class="col-md-7 column-modified text-center">
+      <div class="well hidden-sm">
+        <h3>Welcome to our Website!</h3><hr/>
+        <%= image_tag 'WebCollage.jpg', style: "width: 100%;", class: "img-responsive" %>
       </div>
     </div>
   </div>

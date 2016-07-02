@@ -2,7 +2,7 @@ class Collection
   BASE_DIR                     = Rails.application.secrets.base_photo_path
   PERMISSIBLE_COLLECTION_NAMES =
     [
-      "house", "scanned photo albums"
+      "house", "others", "Albums 1-4", "Albums 5-8"
     ]
 
   attr_reader :name, :album_paths
@@ -37,7 +37,7 @@ class Collection
   def self.all
     @@collections ||=
       Dir.entries(basepath).select do |name|
-        PERMISSIBLE_COLLECTION_NAMES.include?(name.downcase) || /\d{4}/.match(name)
+        match_collection(name)
       end.map do |collection_path|
         {
           path: File.join(basepath, collection_path),
@@ -55,8 +55,12 @@ class Collection
   end
 
   def self.extracted_collection_name(collection_path)
-    /(\d{4}|#{PERMISSIBLE_COLLECTION_NAMES.join("|")})/
-      .match(File.basename(collection_path)) do |m|
+    match_collection(File.basename(collection_path))
+  end
+
+  def self.match_collection(collection_string)
+    /(\d{4}|#{PERMISSIBLE_COLLECTION_NAMES.join("|")})/i
+      .match(File.basename(collection_string)) do |m|
       m[1]
     end
   end

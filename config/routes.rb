@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: "collections#index"
+
   resources :users
   resources :collections, only: :index
   get 'photos/*path', to: 'photos#show'

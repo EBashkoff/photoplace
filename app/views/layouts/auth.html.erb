@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bashkoff Family Website</title>
+  <link rel="shortcut icon" href="<%= asset_path('favicon.png') %>">
+  <%= stylesheet_link_tag 'auth', media: 'all' %>
+  <%= javascript_include_tag 'auth' %>
+  <%= yield :head %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="container">
+  <div class="sub-container">
+    <div class="navbar navbar-custom navbar-static-top" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Select</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <%= render partial: "brand" %>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <%= yield :album_link %>
+          </li>
+          <%= yield :top_menu_item %>
+          <li>
+            <%= link_to "Home", collections_path %>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span><%= current_user.real_name %></span>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <%= link_to "Logout", logout_path, method: :delete %>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <%= render partial: 'flash' %>
+    <%= yield %>
+  </div>
+</div>
+</body>
+</html>

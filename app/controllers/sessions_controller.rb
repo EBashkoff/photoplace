@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   layout 'no_auth'
+
   helper_method :form
   attr_reader :form
 

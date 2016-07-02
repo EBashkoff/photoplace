@@ -8,11 +8,14 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+Rails.application.config.assets.precompile += %w( auth.js )
+Rails.application.config.assets.precompile += %w( auth.css )
+Rails.application.config.assets.precompile += %w( no_auth.js )
+Rails.application.config.assets.precompile += %w( no_auth.css )
 Rails.application.config.assets.precompile += %w( collection.js )
 Rails.application.config.assets.precompile += %w( downloads.js )
-Rails.application.config.assets.precompile += %w( maps.js )
-Rails.application.config.assets.precompile += %w( downloads.js )
-Rails.application.config.assets.precompile += %w( maps.css )
 Rails.application.config.assets.precompile += %w( downloads.css )
+Rails.application.config.assets.precompile += %w( maps.js )
+Rails.application.config.assets.precompile += %w( maps.css )
 Rails.application.config.assets.precompile += %w( galleria.js )
 

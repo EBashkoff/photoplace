@@ -30,7 +30,7 @@ xmlns="http://www.w3.org/1999/html">
   <div id="map-and-list" style="visibility: hidden;">
     <% if geotaggedfiles.length > 0 %>
         <div class="row">
-          <div class="col-md-12 text-center">
+          <div class="col-md-12 text-center visible-lg">
             <h3>Map for <%= album.title %> Album</h3>
             <h6 id="mymappageheading">
               Total geocoded images found: <%= geotaggedfiles.length %>,
@@ -43,15 +43,15 @@ xmlns="http://www.w3.org/1999/html">
         <div class="row">
           <div id="map-canvas-parent" class="row" align="center">
             <!--Actual Google Map goes here-->
-            <div id="map-pane" class="col-xs-8 column-modified" style="border: 1px solid black; color: black; height: 600px;">
+            <div id="map-pane" class="col-xs-10 col-lg-8 column-modified" style="border: 1px solid black; color: black; height: 600px;">
               <div id="map-canvas" style="width: 100%; height: 100%;"></div>
             </div>
-            <div id="photo-pane" class="col-xs-4 column-modified" style="height: 600px; border-top: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; padding-top: 0px;">
+            <div id="photo-pane" class="col col-xs-2 col-lg-4 column-modified" style="height: 600px; border-top: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; padding-top: 0px;">
               <!--<div align="center" width=100% height=28px; style="white-space: nowrap; font-size: small; padding-top: 5px; padding-bottom: 5px;">-->
-              <div id="filelistonrighthead" class="row">
+              <div id="filelistonrighthead" class="row visible-lg">
                 Click on thumbnail or image title to locate on map
               </div>
-              <div id="filelistonright" class="row" style="height: 570px; overflow: scroll;">
+              <div id="filelistonright" class="row" style="height: 570px; overflow: overlay;">
                 <table width=100% style="border-collapse: collapse">
                   <!-- Begin looping through the GPS tagged image files-->
                   <% geotaggedfiles.each do |onefile, onefileinfo| %>
@@ -68,7 +68,7 @@ xmlns="http://www.w3.org/1999/html">
                             onmouseout="demagnifypic()"/>
                           </div>
                         </td>
-                        <td class="list_value_wrap" onmouseover="demagnifypic()" style="border:2px solid white; background-color: #9D9248">
+                        <td class="list_value_wrap visible-lg" onmouseover="demagnifypic()" style="border:2px solid white; background-color: #9D9248">
                           <!-- Show file details-->
                           <div class="tableCell1" align="left">
                             <a class="auto-style6" onclick="bouncemarker('<%= onefile %>')">

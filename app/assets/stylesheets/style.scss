@@ -84,6 +84,7 @@ a {
   margin: 0 auto;
   float: none;
 }
+
 .sub-container {
   border-right: solid $darkOlive 1px;
   border-left: solid $darkOlive 1px;
@@ -177,7 +178,7 @@ a {
   border-top-color: #000000;
   border-bottom-color: #000000;
 }
-@media (max-width: 767) {
+@media (max-width: 1200px) {
   .navbar-custom .navbar-nav .open .dropdown-menu > li > a {
     color: #000000;
   }

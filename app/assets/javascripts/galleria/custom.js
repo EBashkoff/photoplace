@@ -4,7 +4,8 @@ $(document).ready(function () {
 
 function adjustGallerySize() {
     var windowWidth = $(window).width();
-    var galleriaWidth = windowWidth * 0.95;
+    var galleriaWidth = '100%';
+    // var galleriaWidth = windowWidth * 0.95;
     var windowHeight = $(window).height();
     var galleriaHeight = windowHeight - 68;
 

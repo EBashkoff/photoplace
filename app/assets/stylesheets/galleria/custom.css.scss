@@ -1,0 +1,13 @@
+@import "./lib/color";
+.galleria-surround {
+    margin-top: -8px;
+    margin-right: -13px;
+    margin-left: -13px;
+    background-color: $lightOlive;
+}
+
+.sub-container {
+  border-right: solid $lightOlive 1px;
+  border-left: solid $lightOlive 1px;
+  border-bottom: solid $lightOlive 1px;
+}

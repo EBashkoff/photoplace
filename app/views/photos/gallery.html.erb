@@ -1,5 +1,6 @@
 <% content_for :head do %>
     <%= stylesheet_link_tag '/galleria/themes/azur/galleria.azur.css' %>
+    <%= stylesheet_link_tag 'galleria' %>
     <%= javascript_include_tag 'galleria' %>
     <%= javascript_include_tag '/galleria/galleria-1.4.2.min.js' %>
     <%= include_gon %>
@@ -22,7 +23,7 @@
     </li>
 <% end %>
 
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <div class="galleria-surround">
       <div class="galleria">

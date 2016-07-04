@@ -1,0 +1,29 @@
+@import "./lib/color";
+
+.body {
+  display: table;
+}
+
+.left-side {
+  float: none;
+  display: table-cell;
+  border-top: solid black 1px;
+}
+
+.right-side {
+  float: none;
+  display: table-cell;
+  border-top: solid black 1px;
+}
+
+.set-background {
+  background-color: $lightOlive;
+}
+
+.sub-container {
+  padding-bottom: 8px;
+}
+
+#progressbarparent {
+  padding-top: 10px;
+}

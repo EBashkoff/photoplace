@@ -55,12 +55,14 @@ function initialize() {
         },
         panControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
+    };
     if (document.getElementById('map-canvas') !== null) {
         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     } else {
         //            return;
     }
+
+    adjustwindowsize();
     geotaggedfiles = gon.geotaggedfiles;
 
     // The following section is a workaround for Object.keys(geotaggedfiles).length which does not work in MSIE
@@ -95,20 +97,20 @@ function initialize() {
     google.maps.event.addListener(map, "tilesloaded", function() {
         if (initialload) takedownprogressoverlay();
         if ((!zoomaction) && (!panaction)) {
-            adjustwindowsize(true);
+            // adjustwindowsize(true);
             zoomaction = false;
             panaction = false;
         } else {
-            adjustwindowsize(initialload);
+            // adjustwindowsize(initialload);
         }
         initialload = false;
-        var winClientArea = getWindowClientArea();  //  The following removes the listeners for the thumbnails
-        if (winClientArea['type'] === 'phone') {
+        // var winClientArea = getWindowClientArea();  //  The following removes the listeners for the thumbnails
+        // if (winClientArea['type'] === 'phone') {
             var imgTagsOnRight = document.getElementById("filelistonright").getElementsByTagName("img");
             for (var oneImgIndex = 0; oneImgIndex < imgTagsOnRight.length; oneImgIndex++) {
                 imgTagsOnRight[oneImgIndex].onmouseover = function() {null;};
                 imgTagsOnRight[oneImgIndex].onmouseout = function() {null;};
-            }
+            // }
         }
     });
 }
@@ -285,17 +287,8 @@ function takedownprogressoverlay() {
 
 function adjustwindowsize(adjustbounds) {
     var screenheight = $(window).height();
-    if (gon.device_size === "small") {
-        $("#filelistonrighthead").hide();
-        $("#mymappageheading").hide();
-        $("#map-pane").css("height", screenheight - 120);
-        $("#photo-pane").css("height", screenheight - 120);
-        $("#filelistonright").css("height", screenheight - 126);
-    } else {
-        $("#map-pane").css("height", screenheight - 156);
-        $("#photo-pane").css("height", screenheight - 156);
-        $("#filelistonright").css("height", screenheight - 180)
-    }
+    $("#map-canvas").css("height", screenheight - 80 - 140);
+    $("#filelistonright").css("height", screenheight - 80 - 162);
     if (adjustbounds && map && bounds) map.fitBounds(bounds);  //  Set map view appropriate to all markers only on windowsize
 }
 

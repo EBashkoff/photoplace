@@ -27,7 +27,6 @@ class MapsController < ApplicationController
 
     gon.geotaggedfiles   = geotaggedfiles
     gon.small_photo_path = small_photo_path
-    gon.device_size      = device_size
     gon.browser          = browser.name
     gon.pin_icon_img     = pin_icon_images
 

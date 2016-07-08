@@ -3,13 +3,14 @@
 <head>
   <title>Bashkoff Family Website</title>
   <link rel="shortcut icon" href="<%= asset_path('favicon.png') %>">
-  <%= stylesheet_link_tag 'auth', media: 'all' %>
+  <link rel="manifest" href="<%= google_manifest_path %>">
+  <%= stylesheet_link_tag 'auth' %>
   <%= javascript_include_tag 'auth' %>
   <%= yield :head %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
   <div class="sub-container">
     <div class="navbar navbar-custom navbar-static-top" role="navigation">
       <div class="navbar-header">

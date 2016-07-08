@@ -3,7 +3,10 @@ Rails.application.routes.draw do
 
   resources :users
   resources :collections, only: :index
-  get 'photos/*path', to: 'photos#show'
+  get 'photos/*path',
+      controller: :photos,
+      action:     :show
+
   get '/album_gallery/:collection_name/:album_name',
       controller: :photos,
       action:     :gallery,
@@ -25,7 +28,17 @@ Rails.application.routes.draw do
       as:         :map
 
   resource :session, :only => [:show, :create]
-  get    'login'  => 'sessions#new'
-  delete 'logout' => 'sessions#destroy'
+  get 'login',
+      controller: :sessions,
+      action:     :new
+
+  delete 'logout',
+         controller: :sessions,
+         action:     :destroy
+
+  get '/google/manifest.json',
+      controller: :google_manifest,
+      action:     :index,
+      as:         :google_manifest
 
 end

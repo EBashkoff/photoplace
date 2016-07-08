@@ -1,18 +1,6 @@
-@import "./lib/color";
+@import "lib/color";
 
-.body {
-  display: table;
-}
-
-.left-side {
-  float: none;
-  display: table-cell;
-  border-top: solid black 1px;
-}
-
-.right-side {
-  float: none;
-  display: table-cell;
+.top-border {
   border-top: solid black 1px;
 }
 

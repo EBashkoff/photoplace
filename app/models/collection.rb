@@ -11,6 +11,10 @@ class Collection
     new(collection_name)
   end
 
+  def self.reset
+    @@collections = nil
+  end
+
   def initialize(name)
     @name        = name
     @album_paths = Collection.album_paths(name)

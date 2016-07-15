@@ -1,0 +1,55 @@
+<% content_for :head do %>
+    <%= include_gon %>
+    <%= javascript_include_tag 'uploads' %>
+<% end %>
+
+<h4>Image File Upload Process</h4>
+
+<div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" id="my-tab">
+    <li role="presentation" class="active">
+      <a href="#step-1" id="step-1-tab" role="tab" data-toggle="tab"
+      title="Select or create a folder on the server for an album">
+        Step 1
+      </a>
+    </li>
+    <li role="presentation">
+      <a href="#step-2" id="step-2-tab" role="tab" data-toggle="tab"
+      title="Select and upload image files from your computer to the server">
+        Step 2
+      </a>
+    </li>
+    <li role="presentation">
+      <a href="#step-3" id="step-3-tab" role="tab" data-toggle="tab"
+      title="Create multiple resolution image files on server from full resolution images">
+        Step 3
+      </a>
+    </li>
+    <li role="presentation">
+      <a href="#step-4" id="step-4-tab" role="tab" data-toggle="tab"
+      title="Add discovered and uploaded e-mail files to LeadParser template repository">
+        Step 4
+      </a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="step-1">
+      <%= render "server_folders" %>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="step-2">
+      <%= render "upload_files" %>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="step-3">
+      <%= render "resize_images" %>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="step-4">
+      <%= render "label_album" %>
+    </div>
+  </div>
+
+</div>
+

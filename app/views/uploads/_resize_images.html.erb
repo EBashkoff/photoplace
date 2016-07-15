@@ -1,0 +1,58 @@
+<div class="form-group">
+  <%= form_tag "#", remote: true do %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= label_tag :pickedfolder, "STEP 3: Generate reduced resolution images on the server" %>
+          <div id="resocontainer" class="hidden">
+
+            <!--Upload destination text output-->
+            <div class="row">
+              <div class="col-lg-6 col-lg-offset-3 col-modified">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <span>Full resolution files source location:</span>
+                    <span id="filesourcestep3" class="hidden"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-lg-offset-3 col-modified">
+                <span>Click to generate:</span>
+                <%= button_tag "Generate Files",
+                               id:    "genresosbutton",
+                               class: "btn btn-primary btn-sm"
+                %>
+              </div>
+              <div class="col-lg-3 col-modified">
+                <span>Progress:</span>
+                <progress id="progressbarstep3" class="hidden"></progress>
+                <span class="hidden" id="percentcompletestep3">0%</span>
+              </div>
+            </div><br/>
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-offset-3 col-modified">
+                <!--Select local files to upload area-->
+                <h4>Reduced resolution files generated ("|o" = overwritten file):</h4><br/>
+                <table id="resotable" class="table table-striped table-bordered">
+                  <thead>
+                  <tr>
+                    <th class="text-center">Filename</th>
+                    <th class="text-center">Large</th>
+                    <th class="text-center">Medium</th>
+                    <th class="text-center">Small</th>
+                    <th class="text-center">Thumb</th>
+                  </tr>
+                  </thead>
+                  <tbody id="resotbody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <% end %>
+</div>

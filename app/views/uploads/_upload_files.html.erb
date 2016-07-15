@@ -1,0 +1,63 @@
+<div class="form-group">
+  <%= form_tag "#", remote: true do %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= label_tag :fileuploadcontainer, "STEP 2: Select and upload the image files from your computer to the server" %>
+          <div id="fileuploadcontainer" class="hidden">
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-offset-3 col-modified">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <!--Upload destination text output-->
+                    <%= label_tag :filedeststep2, "Destination upload location is:" %>
+                    <span id="filedeststep2" class="hidden"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-offset-3 col-modified">
+                <!--Select local files to upload area-->
+                <%= label_tag :fileselector, "Choose local files requiring upload (maximum file size = #{UploadsController::MAX_UPLOAD_SIZE} bytes)" %>
+                <%= select_tag "pickedfile", nil,
+                               id:       "fileselector",
+                               multiple: true,
+                               size:     10,
+                               class:    "form-control"
+                %>
+                <br/>
+                <!--File window buttons-->
+                <!-- label tag is wrapper for input type="file" button -->
+                <%= label_tag :addfilesbutton, "Choose Files", class: "btn btn-primary btn-sm" %>
+                <%= button_tag "Remove Files", class: "btn btn-danger btn-sm", id: "removefilesbutton" %>
+                <%= button_tag "Upload Files", class: "btn btn-primary btn-sm", id: "uploadfilesbutton" %>
+                <%= file_field_tag "files[]",
+                                   id:       "addfilesbutton",
+                                   style:    "visibility: hidden",
+                                   accept:   "image/jpeg",
+                                   multiple: true
+                %>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-offset-3 col-modified">
+                <!--Upload file text output-->
+                <div>
+                  <span>Uploaded file:</span>
+                  <span id="filebeinguploaded"></span>
+                </div>
+                <div>
+                  <span>File upload progress:</span>
+                  <progress id="progressbarstep2" class="hidden"></progress>
+                  <span id="percentcompletestep2" class="hidden">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <% end %>
+</div>

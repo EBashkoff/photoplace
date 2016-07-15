@@ -1,4 +1,5 @@
 class MapsController < ApplicationController
+
   attr_reader :album, :geotaggedfiles
   helper_method :album, :google_maps_key, :small_photo_path, :thumb_photo_path,
                 :nice_latitude, :nice_longitude, :geotaggedfiles, :collection_name

@@ -22,6 +22,31 @@ Rails.application.routes.draw do
       action:     :index,
       as:         :downloads
 
+  get '/uploads/new',
+      controller: :uploads,
+      action:     :new,
+      as:         :uploads
+
+  get '/uploads/full_res_files',
+      controller: :uploads,
+      action:     :index,
+      as:         :uploads_full_res_files
+
+  post '/uploads',
+      controller: :uploads,
+      action:     :create,
+      as:         :uploads_create_folders
+
+  post '/upload_file',
+      controller: :uploads,
+      action:     :upload_file,
+      as:         :uploads_upload_file
+
+  post '/uploads/resize_file',
+      controller: :uploads,
+      action:     :resize_file,
+      as:         :uploads_resize_file
+
   get '/map/:collection_name/:album_name',
       controller: :maps,
       action:     :index,

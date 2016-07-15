@@ -1,0 +1,64 @@
+<div class="form-group">
+  <%= form_tag "#", remote: true do %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= label_tag :pickedfolder, "STEP 1: Select or create a file folder on the server for your images" %>
+          <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-modified">
+              <%= select_tag "pickedfolder",
+                             options_for_select([["<Image Gallery Root Folder>", Rails.application.secrets.base_photo_path, id: "rootfolderoption"]] + album_paths),
+                             class: "form-control",
+                             size:  10
+              %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-modified">
+              <!--New folder checkbox-->
+              <div class="checkbox">
+                <%= label_tag :newfoldercheckbox, "Check to create a new folder under selected folder" %>
+                <%= check_box_tag "newfoldercheckbox",
+                                  "1",
+                                  false,
+                                  name:  "wantsnewfolder",
+                                  class: "checkbox"
+                %>
+              </div>
+
+              <!--New folder text entry area-->
+              <div id="newfolderinputdiv" class="hidden">
+                <%= label_tag :newfolderinput, "Enter new folder name (use '/' to set placeholder folder):" %>
+                <%= text_field_tag "newfolderinput", nil, class: "form-control" %>
+                <br/>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-modified">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <!--Upload destination text output-->
+                  <b>Your upload destination is:</b>
+                  <span id="uploaddest"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-modified">
+              <!--Set Up New Image Folder Button-->
+              <div>
+                <%= button_tag "Set Destination Image Folder",
+                               class: "btn btn-primary",
+                               id:    "newfolderbutton"
+                %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <% end %>
+</div>

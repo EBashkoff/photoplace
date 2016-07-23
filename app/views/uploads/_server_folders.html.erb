@@ -3,10 +3,10 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <%= label_tag :pickedfolder, "STEP 1: Select or create a file folder on the server for your images" %>
-          <div class="row">
+          <div class="row pad-top">
             <div class="col-lg-6 col-lg-offset-3 col-modified">
               <%= select_tag "pickedfolder",
-                             options_for_select([["<Image Gallery Root Folder>", Rails.application.secrets.base_photo_path, id: "rootfolderoption"]] + album_paths),
+                             options_for_select([["<Image Gallery Root Folder>", Rails.application.secrets.base_photo_path, id: "rootfolderoption"]] + album_infos),
                              class: "form-control",
                              size:  10
               %>
@@ -37,17 +37,25 @@
 
           <div class="row">
             <div class="col-lg-6 col-lg-offset-3 col-modified">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <!--Upload destination text output-->
-                  <b>Your upload destination is:</b>
-                  <span id="uploaddest"></span>
-                </div>
+              <div class="form-group input-group-sm">
+                <!--Upload destination text output-->
+                <b>Your upload destination is:</b>
+                <span id="uploaddest"></span>
+              </div>
+              <div class="form-group input-group-sm">
+                <!--Upload album name-->
+                <%= label_tag :'album-name', "Album name as shown in menu:", class: "pad-top" %>
+                <%= text_field_tag :'album-name', nil, class: "form-control pull-right", style: "width: 40%;" %>
+              </div>
+              <div class="form-group input-group-sm">
+                <!--Upload album description-->
+                <%= label_tag :'album-description', "Album description as shown in menu:", class: "pad-top" %>
+                <%= text_field_tag :'album-description', nil, class: "form-control pull-right", style: "width: 40%;" %>
               </div>
             </div>
           </div>
 
-          <div class="row">
+          <div class="row pad-bottom">
             <div class="col-lg-6 col-lg-offset-3 col-modified">
               <!--Set Up New Image Folder Button-->
               <div>

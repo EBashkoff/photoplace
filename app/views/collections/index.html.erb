@@ -23,7 +23,7 @@
                 <ul class="nav nav-list tree">
                   <% collection.albums.each do |album| %>
                       <li>
-                        <a title href="<%= album_thumbs_path(collection.name, album.name) %>"><%= album.name %></a>
+                        <a title href="<%= album_thumbs_path(collection.name, album.name) %>"><%= album.title %></a>
                       </li>
                   <% end %>
                 </ul>

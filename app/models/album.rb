@@ -28,16 +28,16 @@ class Album
                           .map do |photo_path|
           Photo.new(self, photo_path)
         end
-        m.merge({resolution => photo_objects})
+        m.merge({ resolution => photo_objects })
       end.extend(Photo::Resolutions)
   end
 
-	def title
-    @album_title ||= album_xml.xpath("//groupTitle").first.try(:content)
+  def title
+    album_xml.xpath("//groupTitle").first.try(:content)
   end
 
-	def description
-    @album_description ||= album_xml.xpath("//groupDescription").first.try(:content)
+  def description
+    album_xml.xpath("//groupDescription").first.try(:content)
   end
 
   def self.album_paths(collection_path)
@@ -55,21 +55,43 @@ class Album
   end
 
   def photo_index(filename)
-    Photo
-      .photo_paths(self.path)
-      .large
-      .each_with_index
-      .detect{ |one_pic_path, index| one_pic_path.end_with?(filename) }.last
+    Photo.photo_paths(self.path).large.each_with_index.detect do |one_pic_path, index|
+      one_pic_path.end_with?(filename)
+    end.last
   end
 
-	private
+  def update_xml(title:, description:)
+    self.description = description
+    self.title       = title
+    IO.write(resource_path, album_xml)
+    @album_xml = nil
+    album_xml
+  end
 
-	def resource_path
+  private
+
+  def resource_path
     @resource_path ||= File.join(path, "/resources/mediaGroupData/group.xml")
   end
 
-	def album_xml
-    @album_xml ||= Nokogiri::XML(IO.read(resource_path))
+  def album_xml
+    @album_xml ||=
+      begin
+        unless File.exists?(resource_path)
+          xml = IO.read(File.join(Rails.root, "db", "xml_resource_template.xml"))
+          FileUtils.mkdir_p File.dirname(resource_path)
+          IO.write(resource_path, xml)
+        end
+        Nokogiri::XML(IO.read(resource_path))
+      end
+  end
+
+  def title=(content)
+    album_xml.xpath("//groupTitle").first.content = content
+  end
+
+  def description=(content)
+    album_xml.xpath("//groupDescription").first.content = content
   end
 
 end

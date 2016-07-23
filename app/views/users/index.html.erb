@@ -1,31 +1,35 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid">
+  <div class="row">
+    <p id="notice"><%= notice %></p>
 
-<h2>Listing Users</h2>
-
-<table class="table table-striped table-bordered">
-  <thead>
-    <tr>
-      <th>Username</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
+    <table class="table table-striped table-bordered">
+      <thead>
       <tr>
-        <td><%= user.user_name %></td>
-        <td><%= user.real_name %></td>
-        <td><%= user.email %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Admin</th>
+        <th>Email</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      </thead>
 
-<br>
+      <tbody>
+      <% users.each do |user| %>
+          <tr>
+            <td><%= user.user_name %></td>
+            <td><%= user.real_name %></td>
+            <td><%= user.is_admin? ? "Yes" : "No" %></td>
+            <td><%= user.email %></td>
+            <td><%= link_to 'Show', user %></td>
+            <td><%= link_to 'Edit', edit_user_path(user) %></td>
+            <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
 
-<%= link_to 'New User', new_user_path %>
+  <div class="row">
+    <%= link_to 'New User', new_user_path, class: "btn btn-primary btn-sm" %>
+  </div>
+</div>

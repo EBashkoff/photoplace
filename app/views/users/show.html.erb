@@ -1,19 +1,40 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid">
+  <div class="row row-centered">
+    <div class="col-lg-3 col-lg-offset-4">
+      <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Username:</strong>
-  <%= @user.user_name %>
-</p>
+      <p>
+        <strong>Username:</strong>
+        <%= user.user_name %>
+      </p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @user.real_name %>
-</p>
+      <p>
+        <strong>Name:</strong>
+        <%= user.real_name %>
+      </p>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
+      <p>
+        <strong>Email:</strong>
+        <%= user.email %>
+      </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+      <p>
+        <strong>Admin:</strong>
+        <%= user.is_admin? ? "Yes" : "No" %>
+      </p>
+
+      <% if user.settings_hash.present? %>
+          <% user.settings_hash.each do |key, value| %>
+              <p>
+                <strong><%= key.humanize %>:</strong>
+                <%= value %>
+              </p>
+          <% end %>
+      <% end %>
+
+      <%= link_to 'Edit', edit_user_path(user), class: "btn btn-primary btn-sm" %>
+      |
+      <%= link_to 'Back', users_path, class: "btn btn-primary btn-sm" %>
+    </div>
+  </div>
+</div>

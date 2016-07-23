@@ -28,7 +28,7 @@
     <div class="galleria-surround">
       <div class="galleria">
         <% photos.each do |photo| %>
-            <img src='/<%= photo.app_path %>' data-title="<strong><%= photo.title %></strong>" data-description="<%= photo.description %>">
+            <img src='/<%= downcase_file_extension(photo.app_path) %>' data-title="<strong><%= photo.title %></strong>" data-description="<%= photo.description %>">
         <% end %>
       </div>
     </div>

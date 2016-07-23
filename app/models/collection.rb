@@ -1,9 +1,5 @@
 class Collection
-  BASE_DIR                     = Rails.application.secrets.base_photo_path
-  PERMISSIBLE_COLLECTION_NAMES =
-    [
-      "house", "others", "Albums 1-4", "Albums 5-8"
-    ]
+  BASE_DIR = Rails.application.secrets.base_photo_path
 
   attr_reader :name, :album_paths
 
@@ -63,7 +59,8 @@ class Collection
   end
 
   def self.match_collection(collection_string)
-    /(\d{4}|#{PERMISSIBLE_COLLECTION_NAMES.join("|")})/i
+    return nil if collection_string.index(".")
+    /(\d{4}|.+)/i
       .match(File.basename(collection_string)) do |m|
       m[1]
     end

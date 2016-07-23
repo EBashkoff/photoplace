@@ -9,9 +9,10 @@ function adjustGallerySize() {
     var windowHeight = $(window).height();
     var galleriaHeight = windowHeight - 68;
 
-    $(".galleria").css('height', galleriaHeight);
-    $(".galleria").css('width', galleriaWidth);
-    $(".galleria").css('margin-left', (windowWidth - galleriaWidth - 4) / 2)
+    var galleriaSelector = $(".galleria");
+    galleriaSelector.css('height', galleriaHeight);
+    galleriaSelector.css('width', galleriaWidth);
+    galleriaSelector.css('margin-left', (windowWidth - galleriaWidth - 4) / 2)
 }
 
 

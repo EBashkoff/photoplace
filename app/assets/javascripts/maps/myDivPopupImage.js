@@ -17,7 +17,7 @@ divpopup.style.backgroundColor = "#FFFFFF";
 divpopup.style.border = "3px solid black";
 divpopup.style.padding = popupdivpadding + "px";
 
-function magnifypic(filenm, event) { //  Hover over image thumbnal to display pic popup
+function magnifypic(filenm, event) { //  Hover over image thumbnail to display pic popup
     if (divpopup.firstChild === null) {  //  Test to make sure divpopup is empty before adding an image
         document.getElementsByTagName("body")[0].appendChild(divpopup);
         var domImg = new Image();
@@ -38,10 +38,6 @@ function magnifypic(filenm, event) { //  Hover over image thumbnal to display pi
             yOff += ((yOff < window.innerHeight/2) ? popupoffsetYfromcursor : (-1 * (popupdivheight + 2 * popupoffsetYfromcursor)));
             $("#popupimagediv").css({display: "block"});  // Now that image has loaded, display popup
             setTimeout(function() {if (!(divpopup.firstChild)) $("#popupimagediv").css({display: "none"});}, 100); //  Extinguish any residual popup after 100ms
-//            divpopup.setAttribute("style", "left: " + xOff + "px");  --->  These attempts to set position work only sometimes
-//            divpopup.setAttribute("style", "top: " + yOff + "px");   --->
-//            divpopup.style.left = xOff;                              ---> 
-//            divpopup.style.top = yOff;                               --->
             $("#popupimagediv").css({top: yOff, left: xOff});
         };
         event.cancelBubble = true;

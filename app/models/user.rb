@@ -15,6 +15,11 @@ class User < ActiveRecord::Base
     return possible_user if BCrypt::Password.new(stored_password) == password
   end
 
+  def is_admin?
+    return false unless settings_hash && settings_hash["canadmin"]
+    self.canadmin == "1"
+  end
+
   def method_missing(method, *args)
     return super unless settings_hash.keys.include?(method.to_s)
     settings_hash[method.to_s]

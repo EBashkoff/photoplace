@@ -24,17 +24,21 @@
       </div>
       <div id="resolution-choices" class="well navbar-custom hidden">
         <span>Choose a resolution:&nbsp;&nbsp;</span>
-        <%= link_to "Small", "#", class: "btn btn-xs btn-default",
-                    onclick:             "chosenDownloadResolution('small')"
+        <%= link_to "Small", "#",
+                    class:   "btn btn-xs btn-default",
+                    onclick: "chosenDownloadResolution('small')"
         %>
-        <%= link_to "Medium", "#", class: "btn btn-xs btn-default",
-                    onclick:              "chosenDownloadResolution('medium')"
+        <%= link_to "Medium", "#",
+                    class:   "btn btn-xs btn-default",
+                    onclick: "chosenDownloadResolution('medium')"
         %>
-        <%= link_to "Large", "#", class: "btn btn-xs btn-default",
-                    onclick:             "chosenDownloadResolution('large')"
+        <%= link_to "Large", "#",
+                    class:   "btn btn-xs btn-default",
+                    onclick: "chosenDownloadResolution('large')"
         %>
-        <%= link_to "Full", "#", class: "btn btn-xs btn-default",
-                    onclick:            "chosenDownloadResolution('full')"
+        <%= link_to "Full", "#",
+                    class:   "btn btn-xs btn-default",
+                    onclick: "chosenDownloadResolution('full')"
         %>
       </div>
       <div id="do-download-display" class="well navbar-custom hidden">
@@ -48,9 +52,9 @@
         %>
         <%= link_to "Cancel",
                     downloads_path,
-                    class: "btn btn-xs btn-default",
+                    class:   "btn btn-xs btn-default",
                     onclick: "restoreOriginalDownloadQuestion()",
-                    remote: true
+                    remote:  true
         %>
       </div>
     </div>
@@ -62,7 +66,7 @@
 <div class="row-centered">
   <% photos.each do |photo| %>
       <div class="thumbnail col-centered">
-        <img src='/<%= photo.app_path %>' onclick="toggle()" id="<%= photo.filename %>">
+        <img src='/<%= downcase_file_extension(photo.app_path) %>' onclick="toggle()" id="<%= photo.filename %>">
       </div>
   <% end %>
 </div>

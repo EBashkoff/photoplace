@@ -42,6 +42,11 @@ Rails.application.routes.draw do
       action:     :upload_file,
       as:         :uploads_upload_file
 
+  post '/uploads/set_album_meta',
+      controller: :uploads,
+      action:     :set_album_meta,
+      as:         :uploads_set_album_meta
+
   post '/uploads/resize_file',
       controller: :uploads,
       action:     :resize_file,

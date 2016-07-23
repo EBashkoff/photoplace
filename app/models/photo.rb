@@ -73,7 +73,7 @@ class Photo
 
 	def self.photo_paths(album_path)
 		RESOLUTIONS.reduce({}) do |m, resolution|
-			m.merge({ resolution => Dir[File.join(album_path, "images", resolution.to_s, "*.jpg")] })
+			m.merge({ resolution => Dir[File.join(album_path, "images", resolution.to_s, "*.{jpg,JPG,jpeg,JPEG}")] })
 		end.extend(Resolutions)
 	end
 

@@ -1,5 +1,6 @@
 <% content_for :head do %>
     <%= include_gon %>
+    <%= stylesheet_link_tag 'uploads' %>
     <%= javascript_include_tag 'uploads' %>
 <% end %>
 
@@ -27,12 +28,6 @@
         Step 3
       </a>
     </li>
-    <li role="presentation">
-      <a href="#step-4" id="step-4-tab" role="tab" data-toggle="tab"
-      title="Add discovered and uploaded e-mail files to LeadParser template repository">
-        Step 4
-      </a>
-    </li>
   </ul>
 
   <!-- Tab panes -->
@@ -45,9 +40,6 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="step-3">
       <%= render "resize_images" %>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="step-4">
-      <%= render "label_album" %>
     </div>
   </div>
 

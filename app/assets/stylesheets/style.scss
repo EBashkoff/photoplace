@@ -27,6 +27,15 @@ $grid-gutter-width: 0px;
   @include make-col(8px);
 }
 
+
+.pad-top {
+  padding-top: 6px;
+}
+
+.pad-bottom {
+  padding-bottom: 6px;
+}
+
 body {
   min-width: 320px;
   color: black;

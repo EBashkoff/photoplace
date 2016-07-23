@@ -1,16 +1,15 @@
-var RADIUSOFEARTH = 3959;      // In miles
-var MINCLUSTERDIMENSION = 1;   //  In miles
-var PERCENTAGEOFDIAGONAL = 2;  //  Percentage of map diagonal distance determines radius of cluster
+const RADIUSOFEARTH = 3959;      // In miles
+const PERCENTAGEOFDIAGONAL = 2;  //  Percentage of map diagonal distance determines radius of cluster
 var infoWindows = new Array();
-var labels = new Array();
-var googlemarkers = new Array();
-var geotaggedfiles = new Array();
+var labels = [];
+var googlemarkers = [];
+var geotaggedfiles = [];
 var bounds = new google.maps.LatLngBounds();
 var map;
 var slideshowctr;
 
 if (!Array.prototype.indexOf) {  // This section is needed for MSIE which cannot handle indexOf function without this
-    Array.prototype.indexOf = function (searchElement , fromIndex) {
+    Array.prototype.indexOf = function (searchElement, fromIndex) {
         var i,
             pivot = (fromIndex) ? fromIndex : 0,
             length;
@@ -66,7 +65,7 @@ function initialize() {
     geotaggedfiles = gon.geotaggedfiles;
 
     // The following section is a workaround for Object.keys(geotaggedfiles).length which does not work in MSIE
-    Object.size = function(obj) {
+    Object.size = function (obj) {
         var size = 0, key;
         for (key in obj) {
             if (obj.hasOwnProperty(key)) size++;
@@ -79,39 +78,29 @@ function initialize() {
         takedownprogressoverlay();
         return;
     }
-    generatemarkersfromfiles(initialload, 20/5280);  //  Initial cluster radius in miles
+    generatemarkersfromfiles(initialload, 20 / 5280);  //  Initial cluster radius in miles
 
-    google.maps.event.addListener(map, "zoom_changed", function(event) {
+    google.maps.event.addListener(map, "zoom_changed", function (event) {
         zoomaction = true;
         if (!initialload) {
             generatemarkersfromfiles(initialload, calculateclusterradius());
             $("#zoomlevel").text(map.getZoom());
-            $("#clusterradius").text(Math.round(calculateclusterradius()*100)/100)
+            $("#clusterradius").text(Math.round(calculateclusterradius() * 100) / 100)
         }
     });
 
-    google.maps.event.addListener(map, "center_changed", function() {
+    google.maps.event.addListener(map, "center_changed", function () {
         panaction = true;
     });
 
-    google.maps.event.addListener(map, "tilesloaded", function() {
+    google.maps.event.addListener(map, "tilesloaded", function () {
         if (initialload) takedownprogressoverlay();
         if ((!zoomaction) && (!panaction)) {
-            // adjustwindowsize(true);
+            adjustwindowsize(true);
             zoomaction = false;
             panaction = false;
-        } else {
-            // adjustwindowsize(initialload);
         }
         initialload = false;
-        // var winClientArea = getWindowClientArea();  //  The following removes the listeners for the thumbnails
-        // if (winClientArea['type'] === 'phone') {
-            var imgTagsOnRight = document.getElementById("filelistonright").getElementsByTagName("img");
-            for (var oneImgIndex = 0; oneImgIndex < imgTagsOnRight.length; oneImgIndex++) {
-                imgTagsOnRight[oneImgIndex].onmouseover = function() {null;};
-                imgTagsOnRight[oneImgIndex].onmouseout = function() {null;};
-            // }
-        }
     });
 }
 
@@ -138,13 +127,13 @@ function generatemarkersfromfiles(initialload, clusterradius) {
     comparearraycounter = tempgtfiles.length;
 
     for (var onetaggedfile in geotaggedfiles) {
-        if(geotaggedfiles[onetaggedfile]['indexintogooglemarkers'] == -1) { // Only look at files not compared yet
+        if (geotaggedfiles[onetaggedfile]['indexintogooglemarkers'] == -1) { // Only look at files not compared yet
             if (comparearraycounter > 0) {  // Remove this file from file compare list
                 //  MSIE cannot handle indexOf method without Array.prototype.indexOf section above
-                tempgtfiles.splice(tempgtfiles.indexOf(onetaggedfile),1);
+                tempgtfiles.splice(tempgtfiles.indexOf(onetaggedfile), 1);
                 comparearraycounter--;
             }
-            var markerLatLng = new google.maps.LatLng(geotaggedfiles[onetaggedfile]["latitude"],geotaggedfiles[onetaggedfile]["longitude"]);
+            var markerLatLng = new google.maps.LatLng(geotaggedfiles[onetaggedfile]["latitude"], geotaggedfiles[onetaggedfile]["longitude"]);
             var filearray = new Array();  // marker will have one filename initially
             filearray.push(onetaggedfile);
             var marker = new google.maps.Marker({
@@ -162,11 +151,11 @@ function generatemarkersfromfiles(initialload, clusterradius) {
             });
 
             //  Loop through remaining filenames to compare locations; if similar then add to filename list in marker
-            for (i = 0;  i < comparearraycounter; i++ ) {
+            for (i = 0; i < comparearraycounter; i++) {
                 filenametocompare = tempgtfiles[i];
                 //  alert(i + ": File: " + onetaggedfile + ", Compared to: " + filenametocompare);
-                var latLngToCompare = new google.maps.LatLng(geotaggedfiles[filenametocompare]["latitude"],geotaggedfiles[filenametocompare]["longitude"]);
-                if (google.maps.geometry.spherical.computeDistanceBetween(markerLatLng,latLngToCompare, RADIUSOFEARTH) <= clusterradius) {  // lat/longs are close
+                var latLngToCompare = new google.maps.LatLng(geotaggedfiles[filenametocompare]["latitude"], geotaggedfiles[filenametocompare]["longitude"]);
+                if (google.maps.geometry.spherical.computeDistanceBetween(markerLatLng, latLngToCompare, RADIUSOFEARTH) <= clusterradius) {  // lat/longs are close
                     // alert("In Range");
                     marker.setPosition(null);
                     filearray.push(filenametocompare);
@@ -179,10 +168,10 @@ function generatemarkersfromfiles(initialload, clusterradius) {
                         marker.setIcon(gon.pin_icon_img['large']);
                     }
                     geotaggedfiles[filenametocompare]['indexintogooglemarkers'] = googlemarkerscount;  // Mark file in file source array as accounted for
-                    tempgtfiles.splice(tempgtfiles.indexOf(filenametocompare),1);   //  Remove file from compare list
+                    tempgtfiles.splice(tempgtfiles.indexOf(filenametocompare), 1);   //  Remove file from compare list
                     comparearraycounter--;
                     i--;  //  Decrement i since array element was removed
-                }  else {
+                } else {
                     //                        alert("Not In Range");
                 }
             }  //  End inner compare loop
@@ -199,7 +188,7 @@ function generatemarkersfromfiles(initialload, clusterradius) {
             for (j = 0; j < googlemarkers[i]['numberoffiles']; j++) {
                 fileonmarkerlist = googlemarkers[i]['filenames'][j];
                 concatenatedfilenames += fileonmarkerlist + "\n";
-                var latLngInZone = new google.maps.LatLng(geotaggedfiles[fileonmarkerlist]['latitude'],geotaggedfiles[fileonmarkerlist]['longitude']);
+                var latLngInZone = new google.maps.LatLng(geotaggedfiles[fileonmarkerlist]['latitude'], geotaggedfiles[fileonmarkerlist]['longitude']);
                 boundszone.extend(latLngInZone);
             }
             googlemarkers[i].setPosition(boundszone.getCenter());  //  Calculate center point of this zone of files and put it in group marker
@@ -207,13 +196,12 @@ function generatemarkersfromfiles(initialload, clusterradius) {
         }
     }
 
-    //       var bounds = new google.maps.LatLngBounds();
     for (i = 0; i < googlemarkerscount; i++) {  //  Loop through all markers to place them on map
         //Below code adds label to marker
-        var label = new Label({map: map}, ((googlemarkers[i]['numberoffiles']<10) ? 'small' : 'large'));
+        var label = new Label({map: map}, ((googlemarkers[i]['numberoffiles'] < 10) ? 'small' : 'large'));
         label.bindTo('position', googlemarkers[i], 'position');
         label.bindTo('text', googlemarkers[i], 'numberoffiles');
-        label.bindTo('zindex',googlemarkers[i], 'zIndex');
+        label.bindTo('zindex', googlemarkers[i], 'zIndex');
         labels.push(label);
 
         // Below code creates infowindow pop-up; first create content string
@@ -228,12 +216,12 @@ function generatemarkersfromfiles(initialload, clusterradius) {
         contentstring += "<span id=\"slideshowctrtxt\" style=\"float:right; font-weight: bold;\">1/" + googlemarkers[i]['numberoffiles'] + "</span>";
         contentstring += "</div>";
 
-        if (geotaggedfiles[filenm]['orientation']==='landscape') var imgDimension = "width: 220px;\"";
-        if (geotaggedfiles[filenm]['orientation']==='portrait') var imgDimension = "height: 147px;\"";
+        if (geotaggedfiles[filenm]['orientation'] === 'landscape') var imgDimension = "width: 220px;\"";
+        if (geotaggedfiles[filenm]['orientation'] === 'portrait') var imgDimension = "height: 147px;\"";
         contentstring += "<div id=\"slideshowimagediv\" style=\"border: 1px solid black; padding: 4px; " + imgDimension + " align=center>";
 
-        if (geotaggedfiles[filenm]['orientation']==='landscape') imgDimension = "style=\"max-width: 100% !important;\"";
-        if (geotaggedfiles[filenm]['orientation']==='portrait') imgDimension = "style=\"max-height: 100% !important;\"";
+        if (geotaggedfiles[filenm]['orientation'] === 'landscape') imgDimension = "style=\"max-width: 100% !important;\"";
+        if (geotaggedfiles[filenm]['orientation'] === 'portrait') imgDimension = "style=\"max-height: 100% !important;\"";
         contentstring += "<img src=\"" + gon.small_photo_path + "/" + filenm + "\" alt=\"No Image\" " + imgDimension + "></div>";
 
         contentstring += "<div id=\"slideshowcaption\" style=\"white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\"><b>" + geotaggedfiles[filenm]["description"] + "</b><br>Filename: " + filenm + "</div>";
@@ -244,7 +232,7 @@ function generatemarkersfromfiles(initialload, clusterradius) {
         });
         infoWindows[i] = infoWindow;
 
-        google.maps.event.addListener(googlemarkers[i], 'click', function() {
+        google.maps.event.addListener(googlemarkers[i], 'click', function () {
             for (j = 0; j < googlemarkerscount; j++) {
                 infoWindows[j].close();
             }
@@ -255,17 +243,9 @@ function generatemarkersfromfiles(initialload, clusterradius) {
 }
 
 function calculateclusterradius() {
-    var mapbounds = new google.maps.LatLngBounds();
-    mapbounds = map.getBounds();
+    var mapbounds = map.getBounds();
     var mapsizediagonal = Math.abs(google.maps.geometry.spherical.computeDistanceBetween(mapbounds.getNorthEast(), mapbounds.getSouthWest(), RADIUSOFEARTH));
     return (mapsizediagonal * PERCENTAGEOFDIAGONAL / 100);
-}
-
-function getBoundsHeightWidth(bnds) {
-    var southEast = new google.maps.LatLng(bnds.getSouthWest().lat(), bnds.getNorthEast().lng());
-    var ht = Math.abs(google.maps.geometry.spherical.computeDistanceBetween(bnds.getNorthEast(), southEast, RADIUSOFEARTH));
-    var wid = Math.abs(google.maps.geometry.spherical.computeDistanceBetween(bnds.getSouthWest(), southEast, RADIUSOFEARTH));
-    return {height: ht, width: wid};
 }
 
 function bouncemarker(filenm) {
@@ -273,9 +253,9 @@ function bouncemarker(filenm) {
     panaction = true;
     temp = googlemarkers[geotaggedfiles[filenm]['indexintogooglemarkers']];
     temp.setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(function() {
+    setTimeout(function () {
         temp.setAnimation(null);
-    },2000);
+    }, 2000);
     map.panTo(temp.getPosition());
 }
 
@@ -294,7 +274,8 @@ function adjustwindowsize(adjustbounds) {
 
 function displayslide(event, markernumber) {
     var totalfilenum = googlemarkers[markernumber]['numberoffiles'];
-    event = event || window.event; panaction = true;
+    event = event || window.event;
+    panaction = true;
     var srcEle = event.srcElement || event.target;
     var showdirection = srcEle.name;
     if (showdirection === 'bback') slideshowctr = 0;
@@ -311,8 +292,8 @@ function displayslide(event, markernumber) {
     var oImg = $("#slideshowimagediv img");
     oImg.attr("src", gon.small_photo_path + "/" + thisfile);
     oImg.attr("alt", "No Image");
-    if (geotaggedfiles[thisfile]['orientation']==='landscape') divImg.css("width", "220px");
-    if (geotaggedfiles[thisfile]['orientation']==='portrait') divImg.css("height", "147px");
+    if (geotaggedfiles[thisfile]['orientation'] === 'landscape') divImg.css("width", "220px");
+    if (geotaggedfiles[thisfile]['orientation'] === 'portrait') divImg.css("height", "147px");
     oImg.css("max-width", "100%");
     oImg.css("max-height", "100%");
 
@@ -322,4 +303,6 @@ function displayslide(event, markernumber) {
 //Communicates to the web browser to run the initialize function when the web page loads
 google.maps.event.addDomListener(window, 'load', initialize);
 
-$(window).resize(function () {adjustwindowsize(true)});
+$(window).resize(function () {
+    adjustwindowsize(true)
+});

@@ -1,29 +1,39 @@
-<%= form_for(@user) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<div class="container-fluid">
+  <div class="row row-centered">
+    <div class="col-lg-3 col-lg-offset-4">
+      <div class="form-group">
+        <%= form_for(user) do |f| %>
+            <% if user.errors.any? %>
+                <div class="alert alert-danger pulsate">
+                  <a class="close" data-dismiss="alert">×</a>
+                  <%= pluralize(user.errors.count, "error") %>
+                  prohibited this user from being saved:
+                  <ul>
+                    <% user.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+            <% end %>
 
-      <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+            <fieldset class="form-group">
+              <%= f.label :user_name %>
+              <%= f.text_field :user_name, class: "form-control" %>
+            </fieldset>
+            <fieldset class="form-group">
+              <%= f.label :real_name %>
+              <%= f.text_field :real_name, class: "form-control" %>
+            </fieldset>
+            <fieldset class="form-group">
+              <%= f.label :email %>
+              <%= f.text_field :email, class: "form-control" %>
+            </fieldset>
+
+            <%= f.button do %>
+                <%= content_tag :div, submit_label, class: "btn btn-primary btn-sm" %>
+            <% end %>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :user_name %><br>
-    <%= f.text_field :user_name %>
   </div>
-  <div class="field">
-    <%= f.label :real_name %><br>
-    <%= f.text_field :real_name %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

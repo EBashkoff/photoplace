@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   layout "auth"
-  helper_method :current_user, :gallery_or_album
+  helper_method :current_user, :gallery_or_album, :downcase_file_extension
 
   def current_user
     @current_user ||= User.joins(:sessions).where("wt_session.session_id = ?", cookies['WT_SESSION']).first
@@ -50,6 +50,10 @@ class ApplicationController < ActionController::Base
       m[1].try(:titleize) || ""
     end.gsub("Thumbs", "Album")
 
+  end
+
+  def downcase_file_extension(path)
+    path.sub(/\.([\w]{3,4})$/i) {|m| "#{m.downcase}"}
   end
 
 end

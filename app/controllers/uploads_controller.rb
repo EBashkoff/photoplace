@@ -1,5 +1,3 @@
-require "FileUtils"
-
 class UploadsController < ApplicationController
 
   MAX_UPLOAD_SIZE = 12 * 1000 * 1000
@@ -38,7 +36,7 @@ class UploadsController < ApplicationController
         album.path,
         { "data-name" => album.title, "data-description" => album.description }
       ]
-    end
+    end.sort_by(&:first)
 
     gon.create_folders_url = uploads_create_folders_url
     gon.set_album_meta_url = uploads_set_album_meta_url
@@ -56,16 +54,12 @@ class UploadsController < ApplicationController
       return
     end
 
-    Photo::RESOLUTIONS.each do |resolution|
-      FileUtils.mkdir_p "#{params["newFolder"]}/images/#{resolution.to_s}"
-    end
-
     update_album_title_and_description
 
     render json: { created_folder_root: params["newFolder"] }
 
   rescue => e
-    raise e
+    Rails.logger.error("IN #{self.class}: #{e.message}")
     render json:   { statusText: "Could not create directories on server" },
            status: :internal_server_error
   end
@@ -88,6 +82,7 @@ class UploadsController < ApplicationController
     render json: { success: true, overwritten: pre_existing_file, filename: params["filename"] }
 
   rescue => e
+    Rails.logger.error("IN #{self.class}: #{e.message}")
     render json:   { statusText: "Could not create file on server", success: false },
            status: :internal_server_error
   end
@@ -96,6 +91,12 @@ class UploadsController < ApplicationController
     unless is_valid_base_path? && base_folder_exists?
       render json:   { statusText: "Invalid image root directory given" },
              status: :not_found
+      return
+    end
+
+    unless CreateResizeFolders.new(params["newFolder"]).run
+      render json:   { statusText: "Could not create resolution directories" },
+             status: :internal_server_error
       return
     end
 

@@ -41,6 +41,7 @@ class GenerateImageResizes
         resized_image.write(destination_filename)
         result[:success] = true
       rescue => e
+        Rails.logger.error("IN #{self.class}: #{e.message}")
         result[:success] = false
       end
 

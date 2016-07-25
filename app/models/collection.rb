@@ -1,7 +1,7 @@
 class Collection
   BASE_DIR = Rails.application.secrets.base_photo_path
 
-  attr_reader :name, :album_paths
+  attr_reader :name, :base_album_paths
 
   def self.find(collection_name)
     new(collection_name)
@@ -13,19 +13,19 @@ class Collection
 
   def initialize(name)
     @name        = name
-    @album_paths = Collection.album_paths(name)
+    @base_album_paths = Collection.base_album_paths(name)
   end
 
   def albums
-    @albums ||= album_paths.map do |outer_album_path|
+    @albums ||= base_album_paths.map do |outer_album_path|
       Album.album_paths(outer_album_path).map do |album_path|
         Album.new(self, album_path)
       end
-    end.flatten
+    end.flatten.sort_by(&:name)
   end
 
   def self.names
-    all.keys
+    base_album_infos.keys
   end
 
   def self.basepath
@@ -34,22 +34,23 @@ class Collection
 
   private
 
-  def self.all
+  def self.base_album_infos
     @@collections ||=
       Dir.entries(basepath).select do |name|
         match_collection(name)
       end.map do |collection_path|
         {
-          path: File.join(basepath, collection_path),
-          name: extracted_collection_name(collection_path)
+          collection_name: extracted_collection_name(collection_path),
+          path:            File.join(basepath, collection_path),
+          name:            collection_path
         }
       end.group_by do |collection_info|
-        collection_info[:name]
+        collection_info[:collection_name]
       end
   end
 
-  def self.album_paths(collection_name)
-    all[collection_name].map do |collection_info|
+  def self.base_album_paths(collection_name)
+    base_album_infos[collection_name].map do |collection_info|
       collection_info[:path]
     end
   end
@@ -60,10 +61,12 @@ class Collection
 
   def self.match_collection(collection_string)
     return nil if collection_string.index(".")
-    /(\d{4}|.+)/i
-      .match(File.basename(collection_string)) do |m|
-      m[1]
-    end
+    collection_containing_year =
+      /\d{4}/.match(File.basename(collection_string)) do |m|
+        m[0]
+      end
+    return collection_containing_year if collection_containing_year
+    collection_string
   end
 
 end

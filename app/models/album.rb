@@ -41,17 +41,20 @@ class Album
   end
 
   def self.album_paths(collection_path)
-    [recurse_album_paths(collection_path)].flatten
+    recurse_album_paths(collection_path)
   end
 
-  def self.recurse_album_paths(directory)
-    paths = Dir[File.join(directory, "*")].select do |path|
+  def self.recurse_album_paths(directory, m = [])
+    Dir[File.join(directory, "*")].select do |path|
       File.directory?(path) && !path.end_with?("/resources")
+    end.each do |path|
+      if File.basename(path) == "images"
+        m << path.gsub("/images", "")
+      else
+        recurse_album_paths(path, m)
+      end
     end
-    paths.map do |path|
-      return path.gsub("/images", "") if paths && paths.map { |path| File.basename(path) }.include?("images")
-      recurse_album_paths(path)
-    end
+    m
   end
 
   def photo_index(filename)

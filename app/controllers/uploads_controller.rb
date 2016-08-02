@@ -54,6 +54,10 @@ class UploadsController < ApplicationController
       return
     end
 
+    Photo::RESOLUTIONS.each do |resolution|
+      FileUtils.mkdir_p "#{params["newFolder"]}/images/#{resolution.to_s}"
+    end
+
     update_album_title_and_description
 
     render json: { created_folder_root: params["newFolder"] }

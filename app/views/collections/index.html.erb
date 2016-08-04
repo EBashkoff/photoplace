@@ -21,7 +21,7 @@
               <li>
                 <label class="tree-toggle nav-header" style="font-size: x-large"><%= collection.name %></label>
                 <ul class="nav nav-list tree">
-                  <% collection.albums.each do |album| %>
+                  <% collection.albums.sort_by(&:title).each do |album| %>
                       <li>
                         <a title href="<%= album_thumbs_path(collection.name, album.name) %>"><%= album.title %></a>
                       </li>

@@ -22,7 +22,7 @@ class PhotosController < ApplicationController
     @album  = Collection.find(collection_name).albums.detect do |album|
       album.name == params[:album_name]
     end
-    @photos = album.photos.thumb
+    @photos = album.photos.thumb.sort_by(&:filename)
   end
 
   def show

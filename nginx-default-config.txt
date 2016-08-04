@@ -1,0 +1,79 @@
+# This file lives at /etc/nginx/sites-available/default (default is the filename).
+# If file changes, must reload server: sudo nginx -s reload
+
+# For setup with Puma see https://www.sitepoint.com/deploy-your-rails-app-to-aws/
+# Also see http://stackoverflow.com/questions/17450672/how-to-start-puma-with-unix-socket
+# For http vs. https handling see http://unix.stackexchange.com/questions/175600/how-to-set-nginx-for-http-and-https
+# For X-Accel Mapping https://greenlegos.wordpress.com/2011/09/12/sending-files-with-nginx-x-accel-redirect/
+
+upstream photoplace {
+  # Path to Puma SOCK file, as defined previously
+  server unix:///home/ubuntu/rails_apps/photoplace/shared/tmp/sockets/puma.sock fail_timeout=0;
+}
+
+proxy_cache_path /data/nginx/cache levels=1:2 keys_zone=nginx_cache:10m max_size=5g inactive=60m;
+
+server {
+  listen 80 default_server;
+  listen 443 ssl;
+  server_name www.bashkoff-family.com;
+
+  root /home/ubuntu/rails_apps/photoplace/public;
+  # index index.html index.htm;
+
+  ssl_certificate /etc/nginx/ssl/bashkoff-family_com/ssl-bundle.crt;
+  ssl_certificate_key /etc/nginx/ssl/bashkoff-family_com/bashkoff-family_com.key;
+
+  ssl_session_timeout 5m;
+
+  ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
+  ssl_prefer_server_ciphers on;
+  
+  proxy_cache nginx_cache;
+
+  location ~ ^/(assets|fonts|system|galleria)/|robots.txt|404.html|422.html|500.html {
+    add_header X-Proxy-Cache $upstream_cache_status;
+    proxy_cache_valid any 1m;
+    proxy_cache_min_uses 3;
+    expires max;
+    add_header 'Access-Control-Allow-Origin' *;
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Headers' 'Content-Type,Accept';
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+
+    proxy_cache nginx_cache;
+    proxy_cache_key $host$uri$is_args$args;
+
+    add_header X-Proxy-Cache $upstream_cache_status;
+
+    proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie;
+
+    proxy_hide_header Cache-Control;
+    proxy_hide_header Set-Cookie;
+  }
+
+  location /directphoto {
+    internal; #so /download is not visible to the outside world
+    alias /home/ubuntu/rails_apps/photoplace/db/gallery/;
+  }  
+
+  location / {
+    proxy_set_header X-Sendfile-Type X-Accel-Redirect;
+    #maps a real path to the internal location
+    proxy_set_header X-Accel-Mapping /home/ubuntu/rails_apps/photoplace/db/gallery/=/directphoto/;
+
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $host;
+    proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Connection '';
+    proxy_pass http://photoplace; 
+  }
+
+  client_max_body_size 4G;
+  keepalive_timeout 10;
+
+}

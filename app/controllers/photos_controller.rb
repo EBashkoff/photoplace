@@ -15,7 +15,12 @@ class PhotosController < ApplicationController
       else
         0
       end
-    @photos = album.photos.large
+    @photos =
+      if browser.device.mobile?
+        album.photos.medium.sort_by(&:filename)
+      else
+        album.photos.large.sort_by(&:filename)
+      end
   end
 
   def index

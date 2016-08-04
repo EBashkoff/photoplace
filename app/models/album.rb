@@ -58,9 +58,13 @@ class Album
   end
 
   def photo_index(filename)
-    Photo.photo_paths(self.path).large.each_with_index.detect do |one_pic_path, index|
-      one_pic_path.end_with?(filename)
-    end.last
+    Photo
+      .photo_paths(self.path)
+      .large
+      .sort
+      .each_with_index
+      .detect { |one_pic_path, index| one_pic_path.end_with?(filename) }
+      .last
   end
 
   def update_xml(title:, description:)

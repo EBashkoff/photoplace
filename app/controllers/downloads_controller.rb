@@ -14,7 +14,7 @@ class DownloadsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @photos = album.photos.small
+        @photos = album.photos.small.sort_by(&:filename)
       end
 
       format.zip do |variant|

@@ -14,7 +14,7 @@ class MapsController < ApplicationController
     photos          = album.photos.small
     @geotaggedfiles = photos.select do |photo|
       photo.latitude && photo.longitude
-    end.reduce({}) do |m, photo|
+    end.sort_by(&:filename).reduce({}) do |m, photo|
       info = {
         latitude:    photo.latitude,
         longitude:   photo.longitude,

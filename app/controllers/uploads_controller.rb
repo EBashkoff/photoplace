@@ -125,7 +125,7 @@ class UploadsController < ApplicationController
   end
 
   def update_album_title_and_description
-    album.update_xml(
+    album.update_meta(
       title:       params[:albumName],
       description: params[:albumDescription]
     )

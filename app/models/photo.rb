@@ -71,9 +71,13 @@ class Photo
 		File.size(photo_path)
 	end
 
-	def self.photo_paths(album_path)
+	def self.photo_paths(album)
 		RESOLUTIONS.reduce({}) do |m, resolution|
-			m.merge({ resolution => Dir[File.join(album_path, "images", resolution.to_s, "*.{jpg,JPG,jpeg,JPEG}")] })
+			m.merge(
+				{ resolution => album.photo_filenames.map do |filename|
+					File.join(album.path, "images", resolution.to_s, filename)
+				end }
+			)
 		end.extend(Resolutions)
 	end
 
@@ -106,8 +110,12 @@ class Photo
 	private
 
 	def exifr
-		# Always get EXIF data from the full resolution image
-		@exifr ||= EXIFR::JPEG.new(self.photo_path.gsub(/\/(large|medium|small|thumb)\//, "/full/"))
+		# Always get EXIF data from the thumbnail resolution image
+		@exifr ||=
+		begin
+			thumb_pic = S3Wrapper.get(self.photo_path.gsub(/\/(large|medium|small|thumb)\//, "/thumb/"))
+			EXIFR::JPEG.new(StringIO.new(thumb_pic))
+		end
 	end
 
 end

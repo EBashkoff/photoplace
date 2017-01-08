@@ -76,11 +76,11 @@ class DownloadsController < ApplicationController
   end
 
   def selected_photo_content(filename)
-    entire_path = Photo.photo_paths(album.path).send(resolution).detect do |path|
+    entire_path = album.photos.send(resolution).detect do |path|
       path.end_with?(filename)
     end
     return "" unless entire_path
-    IO.read(entire_path)
+    S3Wrapper.get(entire_path)
   end
 
 end

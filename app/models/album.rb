@@ -1,11 +1,12 @@
 class Album
 
-  attr_reader :collection
+  attr_reader :collection_name
   attr_accessor :album_path, :album_name, :album_tooltip
 
-  def initialize(collection, album_path)
-    @collection = collection
-    @album_path = album_path
+  def initialize(collection_name, album_path)
+    @collection_name = collection_name
+    @album_path      = album_path
+    album_meta
   end
 
   def path
@@ -16,18 +17,10 @@ class Album
     @name ||= File.basename(album_path)
   end
 
-  def app_path
-    album_path.gsub(Rails.application.secrets.base_photo_path, "photos")
-  end
-
-  def s3_path
-    album_path.sub(Rails.application.secrets.base_photo_path + '/', "")
-  end
-
   def photos
     @photos ||=
       Photo::RESOLUTIONS.reduce({}) do |m, resolution|
-        photo_objects = Photo.photo_paths(album_path)
+        photo_objects = Photo.photo_paths(self)
                           .send(resolution)
                           .map do |photo_path|
           Photo.new(self, photo_path)
@@ -37,72 +30,39 @@ class Album
   end
 
   def title
-    album_xml.xpath("//groupTitle").first.try(:content)
+    (album_meta || { title: "NO TITLE" })[:title]
   end
 
   def description
-    album_xml.xpath("//groupDescription").first.try(:content)
+    (album_meta || { description: "NO DESCRIPTION" })[:description]
   end
 
-  def self.album_paths(collection_path)
-    recurse_album_paths(collection_path)
-  end
-
-  def self.recurse_album_paths(directory, m = [])
-    Dir[File.join(directory, "*")].select do |path|
-      File.directory?(path) && !path.end_with?("/resources")
-    end.each do |path|
-      if File.basename(path) == "images"
-        m << path.gsub("/images", "")
-      else
-        recurse_album_paths(path, m)
-      end
-    end
-    m
+  def photo_filenames
+    album_meta[:photo_filenames].sort
   end
 
   def photo_index(filename)
-    Photo
-      .photo_paths(self.path)
-      .large
-      .sort
+    photo_filenames
       .each_with_index
       .detect { |one_pic_path, index| one_pic_path.end_with?(filename) }
       .last
   end
 
-  def update_xml(title:, description:)
-    self.description = description
-    self.title       = title
-    IO.write(resource_path, album_xml)
-    @album_xml = nil
-    album_xml
+  def update_meta(title:, description:)
+    album_meta[:description] = description
+    album_meta[:title]       = title
+    S3Wrapper.put(resource_path, album_meta)
+    album_meta
   end
 
   private
 
   def resource_path
-    @resource_path ||= File.join(path, "/resources/mediaGroupData/group.xml")
+    @resource_path ||= File.join(path, "resource.json")
   end
 
-  def album_xml
-    @album_xml ||=
-      begin
-        unless File.exists?(resource_path)
-          xml = IO.read(File.join(Rails.root, "db", "xml_resource_template.xml"))
-          FileUtils.mkdir_p File.dirname(resource_path)
-          IO.write(resource_path, xml)
-        end
-        Nokogiri::XML(IO.read(resource_path))
-      end
-  end
-
-  def title=(content)
-    album_xml.xpath("//groupTitle").first.content = content
-  end
-
-  def description=(content)
-    album_xml.xpath("//groupDescription").first.content = content
+  def album_meta
+    @album_meta ||= S3Wrapper.get(resource_path)
   end
 
 end

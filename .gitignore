@@ -19,3 +19,5 @@
 /.ruby-version
 /.ruby-gemset
 /public/assets
+/aws_s3_creds.csv
+*.pem

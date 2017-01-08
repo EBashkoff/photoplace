@@ -20,6 +20,10 @@ class Album
     album_path.gsub(Rails.application.secrets.base_photo_path, "photos")
   end
 
+  def s3_path
+    album_path.sub(Rails.application.secrets.base_photo_path + '/', "")
+  end
+
   def photos
     @photos ||=
       Photo::RESOLUTIONS.reduce({}) do |m, resolution|

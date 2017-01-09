@@ -21,7 +21,7 @@
   <% photos.each do |photo| %>
       <div class="thumbnail col-centered">
         <a href="<%= album_gallery_path(filename: photo.filename) %>">
-          <img src='/<%= downcase_file_extension(photo.app_path) %>'>
+          <img src="<%= photo.cf_path %>">
         </a>
       </div>
   <% end %>

@@ -23,7 +23,7 @@
                 <ul class="nav nav-list tree">
                   <% collection.albums.sort_by(&:title).each do |album| %>
                       <li>
-                        <a title href="<%= puts "#{collection.name}-#{album.name}";album_thumbs_path(collection.name, album.name) %>"><%= album.title %></a>
+                        <a title href="<%= album_thumbs_path(collection.name, album.name) %>"><%= album.title %></a>
                       </li>
                   <% end %>
                 </ul>

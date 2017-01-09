@@ -21,7 +21,11 @@ class Photo
 	end
 
 	def path
-		photo_path
+		photo_path.gsub(/\s+/, "+")
+	end
+
+	def cf_path
+		S3Wrapper.cloudfront_url(path)
 	end
 
 	def filename
@@ -112,10 +116,10 @@ class Photo
 	def exifr
 		# Always get EXIF data from the thumbnail resolution image
 		@exifr ||=
-		begin
-			thumb_pic = S3Wrapper.get(self.photo_path.gsub(/\/(large|medium|small|thumb)\//, "/thumb/"))
-			EXIFR::JPEG.new(StringIO.new(thumb_pic))
-		end
+			begin
+				thumb_pic = S3Wrapper.get(self.photo_path.gsub(/\/(large|medium|small|thumb)\//, "/thumb/"))
+				EXIFR::JPEG.new(StringIO.new(thumb_pic))
+			end
 	end
 
 end

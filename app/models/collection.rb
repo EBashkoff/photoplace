@@ -1,6 +1,4 @@
 class Collection
-  BASE_DIR = Rails.application.secrets.base_photo_path
-
   attr_reader :name, :base_album_paths
 
   def self.find(collection_name)

@@ -222,7 +222,7 @@ function generatemarkersfromfiles(initialload, clusterradius) {
 
         if (geotaggedfiles[filenm]['orientation'] === 'landscape') imgDimension = "style=\"max-width: 100% !important;\"";
         if (geotaggedfiles[filenm]['orientation'] === 'portrait') imgDimension = "style=\"max-height: 100% !important;\"";
-        contentstring += "<img src=\"" + gon.small_photo_path + "/" + filenm + "\" alt=\"No Image\" " + imgDimension + "></div>";
+        contentstring += "<img src=\"" + gon.geotaggedfiles[filenm].small_photo_url + "\" alt=\"No Image\" " + imgDimension + "></div>";
 
         contentstring += "<div id=\"slideshowcaption\" style=\"white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\"><b>" + geotaggedfiles[filenm]["description"] + "</b><br>Filename: " + filenm + "</div>";
         contentstring += "</div>";
@@ -290,7 +290,7 @@ function displayslide(event, markernumber) {
 
     var divImg = $("#slideshowimagediv");
     var oImg = $("#slideshowimagediv img");
-    oImg.attr("src", gon.small_photo_path + "/" + thisfile);
+    oImg.attr("src", gon.geotaggedfiles[thisfile].small_photo_url);
     oImg.attr("alt", "No Image");
     if (geotaggedfiles[thisfile]['orientation'] === 'landscape') divImg.css("width", "220px");
     if (geotaggedfiles[thisfile]['orientation'] === 'portrait') divImg.css("height", "147px");

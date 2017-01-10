@@ -59,14 +59,12 @@
                   <!-- Begin looping through the GPS tagged image files-->
                   <% geotaggedfiles.each do |onefile, onefileinfo| %>
                       <div class="row table-bordered">
-                        <% tempthumbfile = File.join(thumb_photo_path, onefile) %>
-                        <% tempsmallfile = File.join(small_photo_path, onefile) %>
                         <div class="col-xs-12 col-lg-4 text-center" onmouseover="demagnifypic()">
-                          <img src="<%= tempthumbfile %>"
+                          <img src="<%= onefileinfo[:thumb_photo_url] %>"
                           onclick="bouncemarker('<%= onefile %>')"
                           style="max-width: 96px; max-height: 96px;"
                           alt="No Thumbnail"
-                          onmouseover="magnifypic('<%= tempsmallfile %>', event)"
+                          onmouseover="magnifypic('<%= onefileinfo[:small_photo_url] %>', event)"
                           onmouseout="demagnifypic()"/>
                         </div>
                         <div class="col-lg-8 visible-lg" style="font-size: small;" onmouseover="demagnifypic()">

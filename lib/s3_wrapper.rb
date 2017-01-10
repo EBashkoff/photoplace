@@ -52,12 +52,10 @@ class S3Wrapper
 
   def self.cloudfront_url(path)
     aws_s3_client
-    puts signer
     signer.signed_url(
       "#{Rails.application.secrets.aws_cf_base_url}/#{path}",
       expires: ASSET_EXPIRATION_TIME.minutes.from_now
     )
-
   end
 
   def self.s3_bucket

@@ -1,8 +1,8 @@
 class MapsController < ApplicationController
 
   attr_reader :album, :geotaggedfiles
-  helper_method :album, :google_maps_key, :small_photo_path, :thumb_photo_path,
-                :nice_latitude, :nice_longitude, :geotaggedfiles, :collection_name
+  helper_method :album, :google_maps_key, :nice_latitude, :nice_longitude,
+                :geotaggedfiles, :collection_name
 
   before_action :require_is_user
 
@@ -11,23 +11,23 @@ class MapsController < ApplicationController
       album.name == params[:album_name]
     end
 
-    photos          = album.photos.small
-    @geotaggedfiles = photos.select do |photo|
+    @geotaggedfiles = album.photos.thumb.select do |photo|
       photo.latitude && photo.longitude
     end.sort_by(&:filename).reduce({}) do |m, photo|
       info = {
-        latitude:    photo.latitude,
-        longitude:   photo.longitude,
-        description: photo.description,
-        filename:    photo.filename,
-        filetype:    photo.filetype,
-        orientation: photo.orientation
+        small_photo_url: photo.cf_path(:small),
+        thumb_photo_url: photo.cf_path,
+        latitude:        photo.latitude,
+        longitude:       photo.longitude,
+        description:     photo.description,
+        filename:        photo.filename,
+        filetype:        photo.filetype,
+        orientation:     photo.orientation
       }
       m.merge({ photo.filename => info })
     end
 
     gon.geotaggedfiles   = geotaggedfiles
-    gon.small_photo_path = small_photo_path
     gon.browser          = browser.name
     gon.pin_icon_img     = pin_icon_images
 
@@ -35,14 +35,6 @@ class MapsController < ApplicationController
   end
 
   private
-
-  def small_photo_path
-    File.join("/", album.app_path, "images", "small")
-  end
-
-  def thumb_photo_path
-    File.join("/", album.app_path, "images", "thumb")
-  end
 
   def nice_latitude(fileinfo)
     return "" unless (latitude = fileinfo[:latitude])

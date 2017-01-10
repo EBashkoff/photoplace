@@ -1,15 +1,6 @@
 require 'exifr'
 
 class Photo
-	BASE_DIR = Rails.application.secrets.base_photo_path
-
-  # Permissible collection names are these plus any those having a name with a
-  # 4 digit number
-	PERMISSIBLE_COLLECTION_NAMES =
-		[
-			"house", "scanned photo albums"
-		]
-
 	RESOLUTIONS = [:full, :large, :medium, :small, :thumb]
 
 	attr_reader :photos, :album
@@ -21,11 +12,13 @@ class Photo
 	end
 
 	def path
-		photo_path.gsub(/\s+/, "+")
+		photo_path
 	end
 
-	def cf_path
-		S3Wrapper.cloudfront_url(path)
+	def cf_path(resolution = nil)
+		target_path = path.dup
+		target_path.sub!("/#{self.resolution}/", "/#{resolution}/") if resolution
+		S3Wrapper.cloudfront_url(target_path.gsub(/\s+/, "+"))
 	end
 
 	def filename
@@ -34,10 +27,10 @@ class Photo
 
   def filetype
     File.extname(photo_path).sub(/^\./, "")
-  end
+	end
 
-	def app_path
-    photo_path.gsub(Rails.application.secrets.base_photo_path, "photos")
+	def resolution
+		/\/(full|large|medium|small|thumb)\//.match(path) { |m| m[1] }
 	end
 
 	def title
@@ -69,10 +62,6 @@ class Photo
 
 	def orientation
 		width > height ? "landscape" : "portrait"
-	end
-
-	def size
-		File.size(photo_path)
 	end
 
 	def self.photo_paths(album)
@@ -114,11 +103,10 @@ class Photo
 	private
 
 	def exifr
-		# Always get EXIF data from the thumbnail resolution image
 		@exifr ||=
 			begin
-				thumb_pic = S3Wrapper.get(self.photo_path.gsub(/\/(large|medium|small|thumb)\//, "/thumb/"))
-				EXIFR::JPEG.new(StringIO.new(thumb_pic))
+				target_pic = S3Wrapper.get(path)
+				EXIFR::JPEG.new(StringIO.new(target_pic))
 			end
 	end
 

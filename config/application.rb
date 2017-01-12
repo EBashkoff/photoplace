@@ -27,5 +27,12 @@ module Photoplace
     config.active_record.raise_in_transactional_callbacks = true
 
     config.web_console.whitelisted_ips = "192.168.2.0/24"
+
+    config.after_initialize do
+      ::Collection.names.map do |collection_name|
+        puts("Preloading collection #{collection_name}...")
+        ::Collection.find(collection_name).albums
+      end
+    end
   end
 end

@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
         session_id:   SecureRandom.hex(16)
       )
       if session_record.save
-        session[:wt_session_id]  = session_record.session_id
+        session[:wt_session_id] = session_record.session_id
         cookies['WT_SESSION'] = session_record.session_id
         redirect_to collections_path
         return

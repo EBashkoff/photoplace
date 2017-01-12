@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   resources :users
   resources :collections, only: :index
+  resources :albums, only: %i(index show edit update)
+
   get 'photos/*path',
       controller: :photos,
       action:     :show

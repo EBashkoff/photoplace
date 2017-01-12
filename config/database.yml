@@ -22,4 +22,7 @@ production:
   <<: *default
   database: wt_webtrees
   username: wt_user
+  host: <%= ENV['DB_URL'] %>
+  port: <%= ENV['DB_PORT'] %>
   password: <%= ENV['DB_PASSWORD'] %>
+  socket: /var/run/mysqld/mysqld.sock

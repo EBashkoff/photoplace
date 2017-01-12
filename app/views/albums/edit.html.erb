@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <div class="row row-centered">
+    <div class="col-lg-3 col-lg-offset-4">
+      <p id="notice"><%= notice %></p>
+      <div class="form-group">
+        <%= form_tag(album_path, method: :put) do |f| %>
+          <%= hidden_field_tag :id %>
+          <p>
+            <strong>Album Name</strong><br />
+            <%= album.name %>
+          </p>
+
+          <fieldset class="form-group">
+            <%= label_tag :title %>
+            <%= text_field_tag :title, album.title, class: "form-control" %>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <%= label_tag :description %>
+            <%= text_field_tag :description, album.description, class: "form-control" %>
+          </fieldset>
+
+          <p>
+            <strong>Album Location</strong><br />
+            <%= album.path %>
+          </p>
+          <%= link_to 'Back', albums_path, class: "btn btn-primary btn-sm" %>
+          <%= submit_tag 'Save', class: "btn btn-primary btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

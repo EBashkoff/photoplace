@@ -17,9 +17,9 @@ class PhotosController < ApplicationController
       end
     @photos =
       if browser.device.mobile?
-        album.photos.medium.sort_by(&:filename)
+        album.photos.small.sort_by(&:filename)
       else
-        album.photos.large.sort_by(&:filename)
+        album.photos.medium.sort_by(&:filename)
       end
   end
 

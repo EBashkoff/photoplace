@@ -23,7 +23,7 @@ class Album
   end
 
   def id
-    @id ||= Album.albums_meta(collection_name, resource_path)[:id]
+    @id ||= Album.albums_meta(resource_path)[:id]
   end
 
   def path
@@ -37,11 +37,12 @@ class Album
   def photos
     @photos ||=
       Photo::RESOLUTIONS.reduce({}) do |m, resolution|
-        photo_objects = Photo.photo_paths(self)
-                          .send(resolution)
-                          .map do |photo_path|
-          Photo.new(self, photo_path)
-        end
+        photo_objects =
+          Photo.photo_paths(self)
+            .send(resolution)
+            .map do |photo_path|
+            Photo.new(self, photo_path)
+          end
         m.merge({ resolution => photo_objects })
       end.extend(Photo::Resolutions)
   end
@@ -55,7 +56,7 @@ class Album
   end
 
   def photo_filenames
-    album_meta[:photo_filenames].sort
+    album_meta[:photos].map { |photo| photo.keys.first.to_s }.sort if album_meta[:photos]
   end
 
   def photo_index(filename)
@@ -72,14 +73,45 @@ class Album
     album_meta
   end
 
+  def album_meta
+    @album_meta ||= Album.albums_meta(resource_path)
+  end
+
+  def assemble_album_metadata
+    photo_meta_array =
+      photos
+        .full
+        .sort_by(&:filename)
+        .map do |photo|
+        {
+          photo.filename => {
+            title:       photo.title(from_exif: true),
+            description: photo.description(from_exif: true),
+            longitude:   photo.longitude(from_exif: true),
+            latitude:    photo.latitude(from_exif: true),
+            width:       photo.width(from_exif: true),
+            height:      photo.height(from_exif: true),
+            orientation: photo.orientation(from_exif: true)
+          }
+        }
+      end
+
+    resource_data = {
+      id:              Album.hash_path(collection_name, resource_path),
+      collection_name: collection_name,
+      title:           self.title,
+      description:     self.description,
+      photos:          photo_meta_array
+    }
+
+    resource_s3_location = File.join(self.path, 'resource.json')
+    S3Wrapper.put(resource_s3_location, resource_data)
+  end
+
   private
 
   def resource_path
     @resource_path ||= File.join(path, RESOURCE_FILE)
-  end
-
-  def album_meta
-    @album_meta ||= Album.albums_meta(collection_name, resource_path)
   end
 
   def self.hash_path(collection_name, resource_path)
@@ -87,18 +119,12 @@ class Album
     OpenSSL::HMAC.hexdigest(digest, collection_name, resource_path).slice(0, 10)
   end
 
-  def self.albums_meta(collection_name, resource_path)
+  def self.albums_meta(resource_path)
     @@albums_metadata ||= {}
 
     return @@albums_metadata[resource_path] if @@albums_metadata[resource_path]
 
-    @@albums_metadata[resource_path] =
-      S3Wrapper
-        .get(resource_path)
-        .merge({
-                 id: hash_path(collection_name, resource_path),
-                 collection_name: collection_name,
-               })
+    @@albums_metadata[resource_path] = S3Wrapper.get(resource_path)
   end
 
 end

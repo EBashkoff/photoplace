@@ -33,35 +33,56 @@ class Photo
 		/\/(full|large|medium|small|thumb)\//.match(path) { |m| m[1] }
 	end
 
-	def title
+	def photo_meta
+		return @photo_meta if @photo_meta
+		meta =
+			album
+				.album_meta[:photos]
+				.detect { |photo| photo.keys.first.to_s == filename }
+				.values
+				.first
+		@photo_meta = OpenStruct.new(meta)
+	end
+
+	def title(from_exif: false)
+		return photo_meta.title unless from_exif
 		app13 = exifr.app1s[1]
 		return "" unless app13
     html_doc = Nokogiri::HTML(app13)
 		html_doc.css('title').xpath('alt/li').text
 	end
 
-	def description
-		exifr.exif.image_description
+	def description(from_exif: false)
+		return photo_meta.description unless from_exif
+		exifr&.exif&.image_description || ""
 	end
 
-	def longitude
-		exifr.gps.try(:longitude)
+	def longitude(from_exif: false)
+		return photo_meta.longitude unless from_exif
+		exifr.gps&.longitude
 	end
 
-	def latitude
-		exifr.gps.try(:latitude)
+	def latitude(from_exif: false)
+		return photo_meta.latitude unless from_exif
+		exifr.gps&.latitude
 	end
 
-	def width
-		exifr.try(:width)
+	def width(from_exif: false)
+		return photo_meta.width unless from_exif
+		exifr&.width
 	end
 
-	def height
-		exifr.try(:height)
+	def height(from_exif: false)
+		return photo_meta.height unless from_exif
+		exifr&.height
 	end
 
-	def orientation
-		width > height ? "landscape" : "portrait"
+	def orientation(from_exif: false)
+		return photo_meta.orientation unless from_exif
+		o_width = width(from_exif: from_exif)
+		o_height = height(from_exif: from_exif)
+		return "" unless o_width && o_height
+		o_width > o_height ? "landscape" : "portrait"
 	end
 
 	def self.photo_paths(album)

@@ -12,8 +12,9 @@ class SessionsController < ApplicationController
   def create
     @form  = AuthenticateForm.new(params[:authenticate_form])
     action = AuthenticateUser.new(form)
-
+    Log.debug("SESSION: REACHED CREATE SESSION")
     if action.run
+      Log.debug("SESSION: CREATE SESSION RECORD")
       session_record = Session.new(
         user:         action.user,
         session_time: Time.now,
@@ -22,6 +23,7 @@ class SessionsController < ApplicationController
         session_id:   SecureRandom.hex(16)
       )
       if session_record.save
+        Log.debug("SESSION: SAVED SESSION RECORD")
         session[:wt_session_id] = session_record.session_id
         cookies['WT_SESSION'] = session_record.session_id
         redirect_to collections_path

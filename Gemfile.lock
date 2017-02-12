@@ -98,6 +98,7 @@ GEM
     minitest (5.8.3)
     multi_json (1.11.2)
     mysql2 (0.3.20)
+    mysql2 (0.3.20-x64-mingw32)
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
     nokogiri (1.6.7.1-x64-mingw32)
@@ -202,7 +203,7 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 RUBY VERSION
-   ruby 2.3.0p0
+   ruby 2.3.1p112
 
 BUNDLED WITH
-   1.12.5
+   1.14.3

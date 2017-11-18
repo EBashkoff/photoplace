@@ -16,8 +16,6 @@
 /.env.production
 /.idea/
 /db/gallery/
-/.ruby-version
-/.ruby-gemset
 /public/assets
 /*.pem
 !/rds-combined-ca-bundle.pem

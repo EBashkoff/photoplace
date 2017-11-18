@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
 
   attr_reader :settings_hash
   attr_accessor :password_confirmation

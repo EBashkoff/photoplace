@@ -1,4 +1,4 @@
-class UserSetting < ActiveRecord::Base
+class UserSetting < ApplicationRecord
   self.table_name = 'wt_user_setting'
   self.primary_key = 'user_id'
   belongs_to :user

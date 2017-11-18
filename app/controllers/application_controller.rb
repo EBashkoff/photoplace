@@ -46,10 +46,13 @@ class ApplicationController < ActionController::Base
 
   def gallery_or_album
     return "" unless request.referrer
-    /\/album_(gallery|thumbs)\//.match(request.referrer) do |m|
-      m[1].try(:titleize) || ""
-    end.gsub("Thumbs", "Album")
+    puts request.referrer
+    label = /\/album_(gallery|thumbs)\//.match(request.referrer) do |m|
+      m[1]
+    end
 
+    return "Album" if label == "album"
+    "Gallery"
   end
 
 end

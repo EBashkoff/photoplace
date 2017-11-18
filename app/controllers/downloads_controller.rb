@@ -9,7 +9,7 @@ class DownloadsController < ApplicationController
 
   def index
     @album = Collection.find(collection_name).albums.detect do |album|
-      album.name == params[:album_name]
+      album.name == download_params[:album_name]
     end
 
     respond_to do |format|
@@ -64,15 +64,15 @@ class DownloadsController < ApplicationController
   end
 
   def collection_name
-    params[:collection_name]
+    download_params[:collection_name]
   end
 
   def photo_names
-    params[:photo_names]
+    download_params[:photo_names].to_h
   end
 
   def resolution
-    params[:resolution]
+    download_params[:resolution]
   end
 
   def selected_photo_content(filename)
@@ -81,6 +81,11 @@ class DownloadsController < ApplicationController
     end
     return "" unless target_photo
     S3Wrapper.get(target_photo.path)
+  end
+
+  def download_params
+    params.permit :collection_name, :album_name, :resolution, :_method,
+                  :authenticity_token, :format, photo_names: {}
   end
 
 end

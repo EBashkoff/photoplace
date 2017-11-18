@@ -1,3 +1,3 @@
 //= require jquery
-//= require jquery-ui/progressbar
+//= require jquery-ui/widgets/progressbar
 //= require_tree ./maps

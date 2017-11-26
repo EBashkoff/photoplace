@@ -1,15 +1,17 @@
 require 'exifr'
 
-class Photo
+class Photo < ApplicationRecord
 	RESOLUTIONS = [:full, :large, :medium, :small, :thumb]
 
 	attr_reader :photos, :album
 	attr_accessor :photo_path
 
-	def initialize(album, photo_path)
-		@album      = album
-		@photo_path = photo_path
-	end
+	mount_uploader :photo_image, PhotoImageUploader
+
+	# def initialize(album, photo_path)
+	# 	@album      = album
+	# 	@photo_path = photo_path
+	# end
 
 	def path
 		photo_path

@@ -18,5 +18,4 @@
 /db/gallery/
 /public/assets
 /*.pem
-!/rds-combined-ca-bundle.pem
 /aws_s3_creds.csv

@@ -20,7 +20,7 @@ class AuthenticateUser
     form.password  = form.password.strip
     @user = User.authenticate(form.user_name, form.password)
 
-    form.errors[:user_name] = "unknown or invalid password." unless user
+    form.errors[:user_name] << "unknown or invalid password." unless user
 
     user.present?
   end

@@ -1,20 +1,13 @@
 class PhotosController < ApplicationController
 
-  attr_reader :photos, :album
-  helper_method :photos, :album, :collection_name
+  helper_method :photos, :album
 
   before_action :require_is_user
 
   def gallery
-    @album = Collection.find(collection_name).albums.detect do |album|
-      album.name == params[:album_name]
-    end
-    gon.starting_image_index =
-      if params[:filename]
-        album.photo_index(params[:filename])
-      else
-        0
-      end
+
+    gon.starting_image_index = 0
+
     @photos =
       if browser.device.mobile?
         album.photos.small.sort_by(&:filename)
@@ -24,10 +17,7 @@ class PhotosController < ApplicationController
   end
 
   def index
-    @album  = Collection.find(collection_name).albums.detect do |album|
-      album.name == params[:album_name]
-    end
-    @photos = album.photos.thumb.sort_by(&:filename)
+    photos
   end
 
   def show
@@ -41,8 +31,13 @@ class PhotosController < ApplicationController
 
   private
 
-  def collection_name
-    params[:collection_name]
+  def album
+    @album ||= Album.find(params[:album_id])
   end
+
+  def photos
+    @photos ||= Photo.joins(album: :collection).select(:image, :album_id, :name, :path).where(album_id: params[:album_id])
+  end
+
 
 end

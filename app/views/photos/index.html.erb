@@ -1,29 +1,29 @@
 <%= stylesheet_link_tag 'downloads' %>
 
 <% content_for :album_link do %>
-    <%= link_to "Gallery: #{album.title}",
-                album_gallery_path(collection_name, album.name),
-                :'data-toggle' => "tooltip",
-                title:         album.description
-    %>
+  <%= link_to "Gallery: #{album.title}",
+              album_gallery_path(album.id),
+              :'data-toggle' => "tooltip",
+              title:         album.description
+  %>
 <% end %>
 
 <% content_for :top_menu_item do %>
-    <li>
-      <%= link_to "Map", map_path(collection_name, album.name) %>
-    </li>
-    <li>
-      <%= link_to "Downloads", downloads_path(collection_name, album.name) %>
-    </li>
+  <li>
+    <%= link_to "Map", map_path(album.id) %>
+  </li>
+  <li>
+    <%= link_to "Downloads", downloads_path(album.id) %>
+  </li>
 <% end %>
 
 <div class="row-centered">
   <% photos.each do |photo| %>
-      <div class="thumbnail col-centered">
-        <a href="<%= album_gallery_path(filename: photo.filename) %>">
-          <img src="<%= photo.cf_path %>">
-        </a>
-      </div>
+    <div class="thumbnail col-centered">
+      <a href="<%= album_gallery_path(album.id) %>">
+        <img src="<%= photo.image_url(:thumb) %>">
+      </a>
+    </div>
   <% end %>
 </div>
 

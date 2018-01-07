@@ -9,6 +9,7 @@ class CreatePhotos < ActiveRecord::Migration[5.1]
       t.integer :width
       t.string :orientation
       t.string :image
+      t.integer :order_index
       t.references :album, foreign_key: true
 
       t.timestamps

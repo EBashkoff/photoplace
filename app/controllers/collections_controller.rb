@@ -6,9 +6,7 @@ class CollectionsController < ApplicationController
   before_action :require_is_user
 
   def index
-    @collections = Collection.names.map do |collection_name|
-      Collection.find(collection_name)
-    end
+    @collections = Collection.order(:name).includes(:albums).all
   end
 
 end

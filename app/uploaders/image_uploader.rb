@@ -1,5 +1,9 @@
 class ImageUploader < CarrierWave::Uploader::Base
 
+  # attr_accessor :height, :width
+
+  # before :cache, :store_dimensions
+
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
@@ -12,7 +16,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "temp/#{model.album&.collection&.name}/#{model.album&.title}/#{model.id}"
+    Rails.application.secrets.aws_s3_base_dir + '/' + model.path
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -30,16 +34,41 @@ class ImageUploader < CarrierWave::Uploader::Base
   #   # do something
   # end
 
+  # def portrait?
+  #   if
+  # end
+
   # Create different versions of your uploaded files:
   version :thumb do
-    process resize_to_fit: [50, 50]
+    process resize_to_fit: [100, 100]
   end
+
+  version :small do
+    process resize_to_fit: [320, 240]
+  end
+
+  version :medium do
+  end
+  process resize_to_fit: [800, 600]
+
+  version :large do
+  end
+  process resize_to_fit: [1024, 768]
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_whitelist
     %w(jpg jpeg)
   end
+
+  # def store_dimensions(file)
+    # puts "STORE DIMENSIONS PARAM TEST #{test.class} : #{test}"
+    # if file && model
+    #   width, height = ::MiniMagick::Image.open(file.file)[:dimensions]
+    #   puts "STORE DIMENSIONS WIDTH #{width} HEIGHT #{height}"
+    #   model.width, model.height = [width, height]
+    # end
+  # end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.

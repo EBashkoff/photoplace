@@ -10,11 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171127031723) do
+ActiveRecord::Schema.define(version: 20171203172638) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "path"
     t.string "title"
     t.string "description"
+    t.integer "order_index"
     t.bigint "collection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -23,6 +25,7 @@ ActiveRecord::Schema.define(version: 20171127031723) do
 
   create_table "collections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
+    t.integer "order_index"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -36,9 +39,11 @@ ActiveRecord::Schema.define(version: 20171127031723) do
     t.integer "width"
     t.string "orientation"
     t.string "image"
+    t.integer "order_index"
     t.bigint "album_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "path"
     t.index ["album_id"], name: "index_photos_on_album_id"
   end
 

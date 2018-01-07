@@ -29,11 +29,5 @@ module Photoplace
     # Do not swallow errors in after_commit/after_rollback callbacks.
     # config.active_record.raise_in_transactional_callbacks = true
 
-    # config.after_initialize do
-    #   ::Collection.names.map do |collection_name|
-    #     puts("Preloading collection #{collection_name}...")
-    #     ::Collection.find(collection_name).albums
-    #   end
-    # end
   end
 end

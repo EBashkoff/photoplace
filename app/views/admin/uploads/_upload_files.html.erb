@@ -20,7 +20,7 @@
             <div class="row">
               <div class="col-lg-6 col-lg-offset-3 col-modified">
                 <!--Select local files to upload area-->
-                <%= label_tag :fileselector, "Choose local files requiring upload (maximum file size = #{UploadsController::MAX_UPLOAD_SIZE} bytes)" %>
+                <%#= label_tag :fileselector, "Choose local files requiring upload (maximum file size = #{UploadsController::MAX_UPLOAD_SIZE} bytes)" %>
                 <%= select_tag "pickedfile", nil,
                                id:       "fileselector",
                                multiple: true,

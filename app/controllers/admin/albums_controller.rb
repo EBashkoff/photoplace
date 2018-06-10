@@ -19,6 +19,14 @@ module Admin
       album
     end
 
+    def new
+      @album = Album.new
+    end
+
+    def create
+
+    end
+
     def edit
       album
     end

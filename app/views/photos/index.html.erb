@@ -20,9 +20,9 @@
 <div class="row-centered">
   <% photos.each do |photo| %>
     <div class="thumbnail col-centered">
-      <a href="<%= album_gallery_path(album.id) %>">
+      <%= link_to album_gallery_path(album, start: photo.order_index - 1) do %>
         <img src="<%= photo.image_url(:thumb) %>">
-      </a>
+      <% end %>
     </div>
   <% end %>
 </div>

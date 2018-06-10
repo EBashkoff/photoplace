@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
-    resources :albums, only: %i(index show edit update)
+    resources :albums, only: %i[index show new create edit update]
 
     get '/uploads/new',
         controller: :uploads,

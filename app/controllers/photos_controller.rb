@@ -6,13 +6,13 @@ class PhotosController < ApplicationController
 
   def gallery
 
-    gon.starting_image_index = 0
+    gon.starting_image_index = params[:start] || 0
 
     @photos =
       if browser.device.mobile?
-        album.photos.small.sort_by(&:filename)
+        gallery_photos(:small)
       else
-        album.photos.medium.sort_by(&:filename)
+        gallery_photos(:medium)
       end
   end
 
@@ -36,7 +36,20 @@ class PhotosController < ApplicationController
   end
 
   def photos
-    @photos ||= Photo.joins(album: :collection).select(:image, :album_id, :name, :path).where(album_id: params[:album_id])
+    @photos ||= album.photos.select(:image, :order_index, :path).order(:order_index)
+  end
+
+  def gallery_photos(resolution)
+    album
+      .photos
+      .order(:order_index)
+      .map do |photo|
+        OpenStruct.new(
+          photo
+            .slice(:title, :description)
+            .merge(cf_path: photo.image.url(resolution))
+        )
+      end
   end
 
 

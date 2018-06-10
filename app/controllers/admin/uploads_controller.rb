@@ -26,10 +26,7 @@ module Admin
     end
 
     def new
-      Collection.reset
-      albums = Collection.names.map do |collection_name|
-        Collection.find(collection_name).albums
-      end.flatten
+      albums = Album.all
 
       @album_infos = albums.map do |album|
         [
@@ -39,11 +36,11 @@ module Admin
         ]
       end.sort_by(&:first)
 
-      gon.create_folders_url = uploads_create_folders_url
-      gon.set_album_meta_url = uploads_set_album_meta_url
-      gon.upload_file_url    = uploads_upload_file_url
-      gon.full_res_files_url = uploads_full_res_files_url
-      gon.resize_file_url    = uploads_resize_file_url
+      gon.create_folders_url = admin_uploads_create_folders_url
+      gon.set_album_meta_url = admin_uploads_set_album_meta_url
+      gon.upload_file_url    = admin_uploads_upload_file_url
+      gon.full_res_files_url = admin_uploads_full_res_files_url
+      gon.resize_file_url    = admin_uploads_resize_file_url
       gon.max_upload_size    = MAX_UPLOAD_SIZE
       gon.base_photo_path    = Rails.application.secrets.base_photo_path
     end

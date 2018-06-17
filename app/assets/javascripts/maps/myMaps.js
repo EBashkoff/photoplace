@@ -1,6 +1,6 @@
-const RADIUSOFEARTH = 3959;      // In miles
-const PERCENTAGEOFDIAGONAL = 2;  //  Percentage of map diagonal distance determines radius of cluster
-var infoWindows = new Array();
+const RadiusOfEarth = 3959;      // In miles
+const PercentageOfDiagonal = 2;  //  Percentage of map diagonal distance determines radius of cluster
+var infoWindows = [];
 var labels = [];
 var googlemarkers = [];
 var geotaggedfiles = [];
@@ -134,7 +134,7 @@ function generatemarkersfromfiles(initialload, clusterradius) {
                 comparearraycounter--;
             }
             var markerLatLng = new google.maps.LatLng(geotaggedfiles[onetaggedfile]["latitude"], geotaggedfiles[onetaggedfile]["longitude"]);
-            var filearray = new Array();  // marker will have one filename initially
+            var filearray = [];  // marker will have one filename initially
             filearray.push(onetaggedfile);
             var marker = new google.maps.Marker({
                 position: markerLatLng,
@@ -144,7 +144,7 @@ function generatemarkersfromfiles(initialload, clusterradius) {
                 filenames: filearray,
                 numberoffiles: 1,
                 zIndex: 1,
-                title: geotaggedfiles[onetaggedfile]["description"] + "\n"
+                title: geotaggedfiles[onetaggedfile]["caption"] + "\n"
                 + "Filename: " + geotaggedfiles[onetaggedfile]["filename"] + "\n"
                 + "Latitude: " + ((geotaggedfiles[onetaggedfile]["latitude"] > 0.0) ? "N " : "S ") + Math.abs(geotaggedfiles[onetaggedfile]["latitude"]) + "\n"
                 + "Longitude: " + ((geotaggedfiles[onetaggedfile]["longitude"] > 0.0) ? "E " : "W ") + Math.abs(geotaggedfiles[onetaggedfile]["longitude"])
@@ -155,7 +155,7 @@ function generatemarkersfromfiles(initialload, clusterradius) {
                 filenametocompare = tempgtfiles[i];
                 //  alert(i + ": File: " + onetaggedfile + ", Compared to: " + filenametocompare);
                 var latLngToCompare = new google.maps.LatLng(geotaggedfiles[filenametocompare]["latitude"], geotaggedfiles[filenametocompare]["longitude"]);
-                if (google.maps.geometry.spherical.computeDistanceBetween(markerLatLng, latLngToCompare, RADIUSOFEARTH) <= clusterradius) {  // lat/longs are close
+                if (google.maps.geometry.spherical.computeDistanceBetween(markerLatLng, latLngToCompare, RadiusOfEarth) <= clusterradius) {  // lat/longs are close
                     // alert("In Range");
                     marker.setPosition(null);
                     filearray.push(filenametocompare);
@@ -224,7 +224,7 @@ function generatemarkersfromfiles(initialload, clusterradius) {
         if (geotaggedfiles[filenm]['orientation'] === 'portrait') imgDimension = "style=\"max-height: 100% !important;\"";
         contentstring += "<img src=\"" + gon.geotaggedfiles[filenm].small_photo_url + "\" alt=\"No Image\" " + imgDimension + "></div>";
 
-        contentstring += "<div id=\"slideshowcaption\" style=\"white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\"><b>" + geotaggedfiles[filenm]["description"] + "</b><br>Filename: " + filenm + "</div>";
+        contentstring += "<div id=\"slideshowcaption\" style=\"white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\"><b>" + geotaggedfiles[filenm]["caption"] + "</b><br>Filename: " + filenm + "</div>";
         contentstring += "</div>";
 
         var infoWindow = new google.maps.InfoWindow({
@@ -244,8 +244,8 @@ function generatemarkersfromfiles(initialload, clusterradius) {
 
 function calculateclusterradius() {
     var mapbounds = map.getBounds();
-    var mapsizediagonal = Math.abs(google.maps.geometry.spherical.computeDistanceBetween(mapbounds.getNorthEast(), mapbounds.getSouthWest(), RADIUSOFEARTH));
-    return (mapsizediagonal * PERCENTAGEOFDIAGONAL / 100);
+    var mapsizediagonal = Math.abs(google.maps.geometry.spherical.computeDistanceBetween(mapbounds.getNorthEast(), mapbounds.getSouthWest(), RadiusOfEarth));
+    return (mapsizediagonal * PercentageOfDiagonal / 100);
 }
 
 function bouncemarker(filenm) {
@@ -296,8 +296,7 @@ function displayslide(event, markernumber) {
     if (geotaggedfiles[thisfile]['orientation'] === 'portrait') divImg.css("height", "147px");
     oImg.css("max-width", "100%");
     oImg.css("max-height", "100%");
-
-    $("#slideshowcaption").text = "<b>" + geotaggedfiles[thisfile]["description"] + "</b><br>Filename: " + thisfile;
+    $("#slideshowcaption").html("<b>" + geotaggedfiles[thisfile]["caption"] + "</b><br>Filename: " + thisfile);
 }
 
 //Communicates to the web browser to run the initialize function when the web page loads

@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row">
+    <p id="notice"><%= notice %></p>
+
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>Collection Name (click to show)</th>
+        <th>Albums</th>
+        <th>Created At</th>
+        <th>
+          <%= link_to 'New Collection', new_admin_collection_path, class: "btn btn-primary btn-sm" %>
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% collections.each do |collection| %>
+          <tr>
+            <td><%= link_to collection.name, admin_collection_path(collection) %></td>
+            <td><%= collection.album_count %></td>
+            <td><%= collection.created_at.in_time_zone('EST').strftime('%B %d, %Y') %></td>
+            <td><%= link_to 'Edit', edit_admin_collection_path(collection) %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate collections %>
+  </div>
+
+</div>

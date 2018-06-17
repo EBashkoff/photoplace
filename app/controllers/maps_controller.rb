@@ -15,12 +15,12 @@ class MapsController < ApplicationController
         thumb_photo_url: photo.image.url(:thumb),
         latitude:        photo.latitude,
         longitude:       photo.longitude,
-        description:     photo.description,
+        caption:         photo.title.presence || photo.description.presence || '',
         filename:        photo.filename,
         filetype:        photo.filetype,
         orientation:     photo.orientation
       }
-      m.merge({ photo.image => info })
+      m.merge({ photo.filename => info })
     end
 
     gon.geotaggedfiles   = geotaggedfiles

@@ -2,8 +2,6 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   # attr_accessor :height, :width
 
-  # before :cache, :store_dimensions
-
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
@@ -40,20 +38,21 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   version :thumb do
-    process resize_to_fit: [100, 100]
+    process resize_to_fit: [100, 100, combine_options: { 'auto_orient' => nil }]
   end
 
   version :small do
-    process resize_to_fit: [320, 240]
+    process resize_to_fit: [320, 240, combine_options: { 'auto_orient' => nil }]
   end
 
   version :medium do
+    process resize_to_fit: [800, 600, combine_options: { 'auto_orient' => nil }]
   end
-  process resize_to_fit: [800, 600]
 
   version :large do
+    process resize_to_fit: [1024, 768, combine_options: { 'auto_orient' => nil }]
+    process :store_dimensions
   end
-  process resize_to_fit: [1024, 768]
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
@@ -61,14 +60,14 @@ class ImageUploader < CarrierWave::Uploader::Base
     %w(jpg jpeg)
   end
 
-  # def store_dimensions(file)
-    # puts "STORE DIMENSIONS PARAM TEST #{test.class} : #{test}"
-    # if file && model
-    #   width, height = ::MiniMagick::Image.open(file.file)[:dimensions]
-    #   puts "STORE DIMENSIONS WIDTH #{width} HEIGHT #{height}"
-    #   model.width, model.height = [width, height]
-    # end
-  # end
+  def store_dimensions
+    puts "STORE DIMENSIONS PARAM TEST #{file.file}"
+    if file && model
+      width, height = ::MiniMagick::Image.open(file.file)[:dimensions]
+      model.orientation = width > height ? 'landscape' : 'portrait'
+      puts "STORE DIMENSIONS WIDTH #{width} HEIGHT #{height} ORIENTATION: #{model.orientation}"
+    end
+  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.

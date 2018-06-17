@@ -6,7 +6,7 @@ task "update_lat_long" => :environment do
     puts "  ** Updating Album: #{album.path} with #{photos.count} photos (ID=#{album.id}, #{album.order_index})"
     photos.each do |photo|
       print '.'
-      photo.send(:save_exif_info)
+      photo.send(:save_exif_info, force_save: true)
     end
     puts " "
   end

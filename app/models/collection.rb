@@ -7,7 +7,7 @@ class Collection < ApplicationRecord
 
   has_many :albums
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   def self.match_collection(collection_string)
     /(\d{4}|#{PERMISSIBLE_COLLECTION_NAMES.join("|")})/i

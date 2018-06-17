@@ -27,12 +27,21 @@ class Photo < ApplicationRecord
     save_exif_info if new_record?
   end
 
-  def save_exif_info
+  def save_exif_info(force_save: false)
     if image
+
       self.latitude = exifr.gps_latitude.to_f * latitude_sign
       self.longitude = exifr.gps_longitude.to_f * longitude_sign
-      self.height = exifr.height
-      self.width = exifr.width
+      if self.latitude == 0.0 && self.longitude == 0.0
+        self.latitude = nil
+        self.longitude = nil
+      end
+      dimensions = [exifr.width, exifr.height].sort
+      if self.orientation == 'landscape'
+        self.height, self.width = dimensions
+      else
+        self.width, self.height = dimensions
+      end
       self.description = exifr.image_description
       app13 = exifr.app1s[1]
       self.title =
@@ -40,10 +49,7 @@ class Photo < ApplicationRecord
           html_doc = Nokogiri::HTML(app13)
           html_doc.css('title').xpath('alt/li').text
         end
-      self.orientation =
-        if width && height
-          width > height ? "landscape" : "portrait"
-        end
+      self.save if force_save
     end
   end
 
@@ -61,7 +67,7 @@ class Photo < ApplicationRecord
   end
 
   def longitude_sign
-    exifr.gps_longitude_ref == 'E' ? 1.0 : -1.0
+    exifr.gps_longitude_ref == 'W' ? -1.0 : 1.0
   end
 
   def latitude_sign

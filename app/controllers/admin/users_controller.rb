@@ -26,21 +26,22 @@ module Admin
       @user = User.new
 
       if user.update_user(user_params)
-        flash[:success] = 'User was successfully updated.'
+        flash.now[:success] = 'User was successfully created.'
         render :show
       else
-        flash[:error] = ['User could not be successfully updated.']
+        flash.now[:error] = ['User could not be successfully created.']
         render :new
       end
     end
 
     def update
       if user.update_user(user_params)
-        flash[:success] = 'User was successfully updated.'
+        flash.now[:success] = 'User was successfully updated.'
+        render :show
       else
-        flash[:error] = ['User could not be successfully updated.']
+        flash.now[:error] = ['User could not be successfully updated.']
+        render :edit
       end
-      render :edit
     end
 
     def destroy

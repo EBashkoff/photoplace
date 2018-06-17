@@ -3,37 +3,33 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
-    resources :albums, only: %i[index show new create edit update]
+    resources :collections, only: %i[index show new create edit update]
+    resources :albums, only: %i[index show edit update]
 
     get '/uploads/new',
         controller: :uploads,
         action:     :new,
         as:         :uploads
 
-    get '/uploads/full_res_files',
-        controller: :uploads,
-        action:     :index,
-        as:         :uploads_full_res_files
-
     post '/uploads',
          controller: :uploads,
          action:     :create,
-         as:         :uploads_create_folders
+         as:         :uploads_create
+
+    put '/uploads',
+         controller: :uploads,
+         action:     :update,
+         as:         :uploads_update
 
     post '/upload_file',
          controller: :uploads,
          action:     :upload_file,
          as:         :uploads_upload_file
 
-    post '/uploads/set_album_meta',
+    post '/after_upload_files',
          controller: :uploads,
-         action:     :set_album_meta,
-         as:         :uploads_set_album_meta
-
-    post '/uploads/resize_file',
-         controller: :uploads,
-         action:     :resize_file,
-         as:         :uploads_resize_file
+         action:     :after_upload_files,
+         as:         :uploads_after_upload_files
   end
 
   resources :collections, only: :index

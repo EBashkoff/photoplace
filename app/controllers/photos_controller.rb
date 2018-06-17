@@ -20,15 +20,6 @@ class PhotosController < ApplicationController
     photos
   end
 
-  def show
-    respond_to do |format|
-      format.jpg do
-        filename = File.join(Rails.root, Rails.application.secrets.base_photo_path, "#{params[:path]}.jpg")
-        send_file filename, type: "image/jpeg", disposition: 'inline'
-      end
-    end
-  end
-
   private
 
   def album
@@ -51,6 +42,5 @@ class PhotosController < ApplicationController
         )
       end
   end
-
 
 end

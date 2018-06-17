@@ -6,7 +6,7 @@
           <div class="row pad-top">
             <div class="col-lg-6 col-lg-offset-3 col-modified">
               <%= select_tag "pickedfolder",
-                             options_for_select([["<Image Gallery Root Folder>", Rails.application.secrets.base_photo_path, id: "rootfolderoption"]] + album_infos),
+                             options_for_select(album_infos),
                              class: "form-control",
                              size:  10
               %>
@@ -30,6 +30,12 @@
               <div id="newfolderinputdiv" class="hidden">
                 <%= label_tag :newfolderinput, "Enter new folder name (use '/' to set placeholder folder):" %>
                 <%= text_field_tag "newfolderinput", nil, class: "form-control" %>
+                <br/>
+                <%= label_tag :collection, "Select a Collection:" %>
+                <%= select_tag :collection,
+                               options_for_select(Collection.order(:name).all.pluck(:name, :id)),
+                               class: 'form-control'
+                %>
                 <br/>
               </div>
             </div>

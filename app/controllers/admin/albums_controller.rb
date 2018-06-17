@@ -3,8 +3,6 @@ require 'zip'
 module Admin
   class AlbumsController < ApplicationController
 
-    attr_reader :photos, :album
-    helper_method :photos, :album, :collection_name
 
     before_action :require_is_admin
 
@@ -19,25 +17,18 @@ module Admin
       album
     end
 
-    def new
-      @album = Album.new
-    end
-
-    def create
-
-    end
-
     def edit
       album
     end
 
     def update
       if album.update(album_params)
-        flash[:success] = 'The album was successfully updated.'
+        flash.now[:success] = 'The album was successfully updated.'
+        render :show
       else
-        flash[:error] = ['The album could not be successfully updated.']
+        flash.now[:error] = ['The album could not be successfully updated.']
+        render :edit
       end
-      render :edit
     end
 
     private
@@ -54,7 +45,7 @@ module Admin
     end
 
     def album
-      @album ||= albums.where("albums.id = ?", params[:id]).first
+      @album ||= Album.find_by(id: params[:id])
     end
 
     def album_params

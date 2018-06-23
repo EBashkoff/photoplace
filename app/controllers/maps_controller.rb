@@ -2,24 +2,20 @@ class MapsController < ApplicationController
 
   attr_reader :album, :geotaggedfiles
   helper_method :album, :google_maps_key, :nice_latitude, :nice_longitude,
-                :geotaggedfiles, :collection_name
+                :geotaggedfiles
 
   before_action :require_is_user
 
   def index
-    @album = Collection.find(collection_name).albums.detect do |album|
-      album.name == params[:album_name]
-    end
-
-    @geotaggedfiles = album.photos.thumb.select do |photo|
+    @geotaggedfiles = album.photos.select do |photo|
       photo.latitude && photo.longitude
-    end.sort_by(&:filename).reduce({}) do |m, photo|
+    end.sort_by(&:order_index).reduce({}) do |m, photo|
       info = {
-        small_photo_url: photo.cf_path(:small),
-        thumb_photo_url: photo.cf_path,
+        small_photo_url: photo.image.url(:small),
+        thumb_photo_url: photo.image.url(:thumb),
         latitude:        photo.latitude,
         longitude:       photo.longitude,
-        description:     photo.description,
+        caption:         photo.title.presence || photo.description.presence || '',
         filename:        photo.filename,
         filetype:        photo.filetype,
         orientation:     photo.orientation
@@ -35,6 +31,10 @@ class MapsController < ApplicationController
   end
 
   private
+
+  def album
+    @album ||= Album.find_by(id: params[:album_id])
+  end
 
   def nice_latitude(fileinfo)
     return "" unless (latitude = fileinfo[:latitude])
@@ -53,10 +53,6 @@ class MapsController < ApplicationController
   def device_size
     return "small" if params["shorthead"]
     ""
-  end
-
-  def collection_name
-    params[:collection_name]
   end
 
   def pin_icon_images

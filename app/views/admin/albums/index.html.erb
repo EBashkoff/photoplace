@@ -5,29 +5,29 @@
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
-        <th>Name</th>
-        <th>Title</th>
+        <th>Collection (click to show)</th>
+        <th>Title (click to show)</th>
         <th>Description</th>
         <th>Path</th>
-        <th>Number of Pictures</th>
-        <th colspan="2"></th>
+        <th>Pictures</th>
+        <th>-----</th>
       </tr>
       </thead>
 
       <tbody>
       <% albums.each do |album| %>
           <tr>
-            <td><%= album.name %></td>
-            <td><%= album.title %></td>
+            <td><%= link_to album.collection_name, edit_admin_collection_url(album.collection) %></td>
+            <td><%= link_to album.title, admin_album_path(album.id) %></td>
             <td><%= album.description %></td>
             <td><%= album.path %></td>
-            <td><%= album.photos.full.count %></td>
-            <td><%= link_to 'Show', album_path(album.id) %></td>
-            <td><%= link_to 'Edit', edit_album_path(album.id) %></td>
+            <td><%= album.photo_count %></td>
+            <td><%= link_to 'Edit', edit_admin_album_path(album.id) %></td>
           </tr>
       <% end %>
       </tbody>
     </table>
+    <%= paginate albums %>
   </div>
 
 </div>

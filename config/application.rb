@@ -17,6 +17,7 @@ module Photoplace
     # -- all .rb files in that directory are automatically loaded.
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.autoload_paths += Dir["#{config.root}/lib/tasks/**/"]
+    config.autoload_paths += Dir["#{config.root}/app/uploaders/**/"]
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -29,11 +30,5 @@ module Photoplace
     # Do not swallow errors in after_commit/after_rollback callbacks.
     # config.active_record.raise_in_transactional_callbacks = true
 
-    config.after_initialize do
-      ::Collection.names.map do |collection_name|
-        puts("Preloading collection #{collection_name}...")
-        ::Collection.find(collection_name).albums
-      end
-    end
   end
 end

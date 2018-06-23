@@ -3,28 +3,24 @@ require 'zip'
 class DownloadsController < ApplicationController
 
   attr_reader :photos, :album
-  helper_method :photos, :album, :collection_name
+  helper_method :photos, :album
 
   before_action :require_is_user
 
   def index
-    @album = Collection.find(collection_name).albums.detect do |album|
-      album.name == download_params[:album_name]
-    end
-
     respond_to do |format|
       format.html do
-        @photos = album.photos.small.sort_by(&:filename)
+        @photos = album.photos.sort_by(&:order_index)
       end
 
       format.zip do |variant|
-        unless resolution.present? && photo_names.present?
+        unless resolution.present? && photo_ids.present?
           variant.none
           redirect_to downloads_path
           return
         end
         variant.any do
-          if photo_names.count > 1
+          if photo_ids.count > 1
             send_zipfile
           else
             send_single_image
@@ -36,56 +32,52 @@ class DownloadsController < ApplicationController
 
   private
 
+  def album
+    @album ||= Album.find_by(id: params[:album_id])
+  end
+
   def send_zipfile
     stream = Zip::OutputStream::write_buffer do |zip|
-      photo_names.each do |_, filename|
-        zip.put_next_entry(filename)
-        zip.write(selected_photo_content(filename))
+      selected_photos.each do |photo|
+        zip.put_next_entry(photo.filename)
+        zip.write(photo.image.read)
       end
     end
 
     stream.rewind
-    zipbody = stream.sysread
+    zipbody                 = stream.sysread
     headers["Content-Type"] = "application/json"
     send_data(
       zipbody,
-      filename:    "#{album.name}.zip",
+      filename:    "#{album.title}.zip",
       disposition: :attachment
     )
   end
 
   def send_single_image
-    filename = photo_names.values.first
+    photo = selected_photos.first
     send_data(
-      selected_photo_content(filename),
-      filename:    filename,
+      photo.image.read,
+      filename:    photo.filename,
       disposition: :attachment
     )
   end
 
-  def collection_name
-    download_params[:collection_name]
-  end
-
-  def photo_names
-    download_params[:photo_names].to_h
+  def photo_ids
+    download_params[:photo_ids].split(',')
   end
 
   def resolution
     download_params[:resolution]
   end
 
-  def selected_photo_content(filename)
-    target_photo = album.photos.send(resolution).detect do |photo|
-      photo.filename == filename
-    end
-    return "" unless target_photo
-    S3Wrapper.get(target_photo.path)
+  def selected_photos
+    @selected_photos ||= Photo.where(id: photo_ids)
   end
 
   def download_params
-    params.permit :collection_name, :album_name, :resolution, :_method,
-                  :authenticity_token, :format, photo_names: {}
+    params.permit :album_id, :resolution, :photo_ids, :_method,
+                  :authenticity_token, :format
   end
 
 end

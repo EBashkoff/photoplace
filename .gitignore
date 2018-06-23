@@ -17,5 +17,6 @@
 /.idea/
 /db/gallery/
 /public/assets
+/public/uploads
 /*.pem
 /aws_s3_creds.csv

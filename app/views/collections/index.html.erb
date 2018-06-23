@@ -17,13 +17,13 @@
       <div class="well">
       <h3>Albums</h3><hr/>
         <ul class="nav nav-list">
-          <% collections.sort_by(&:name).each do |collection| %>
+          <% collections.each do |collection| %>
               <li>
                 <label class="tree-toggle nav-header" style="font-size: x-large"><%= collection.name %></label>
                 <ul class="nav nav-list tree">
                   <% collection.albums.sort_by(&:title).each do |album| %>
                       <li>
-                        <a title href="<%= album_thumbs_path(collection.name, album.name) %>"><%= album.title %></a>
+                        <a title href="<%= album_thumbs_path(album.id) %>"><%= album.title %></a>
                       </li>
                   <% end %>
                 </ul>

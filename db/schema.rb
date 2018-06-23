@@ -10,7 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20171203172638) do
+
+  create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "path"
+    t.string "title"
+    t.string "description"
+    t.integer "order_index"
+    t.bigint "collection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_albums_on_collection_id"
+  end
+
+  create_table "collections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.integer "order_index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "photos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "title"
+    t.string "description"
+    t.float "longitude", limit: 24
+    t.float "latitude", limit: 24
+    t.integer "height"
+    t.integer "width"
+    t.string "orientation"
+    t.string "image"
+    t.integer "order_index"
+    t.bigint "album_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "path"
+    t.index ["album_id"], name: "index_photos_on_album_id"
+  end
 
   create_table "wt_block", primary_key: "block_id", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "gedcom_id"
@@ -342,6 +377,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "setting_value", null: false
   end
 
+  add_foreign_key "albums", "collections"
+  add_foreign_key "photos", "albums"
   add_foreign_key "wt_block", "wt_gedcom", column: "gedcom_id", primary_key: "gedcom_id", name: "wt_block_ibfk_1"
   add_foreign_key "wt_block", "wt_module", column: "module_name", primary_key: "module_name", name: "wt_block_ibfk_3"
   add_foreign_key "wt_block", "wt_user", column: "user_id", primary_key: "user_id", name: "wt_block_ibfk_2"

@@ -16,10 +16,10 @@
 
 <% content_for :top_menu_item do %>
     <li>
-      <%= link_to "Map", map_path(collection_name, album.name) %>
+      <%= link_to "Map", map_path(album) %>
     </li>
     <li>
-      <%= link_to "Downloads", downloads_path(collection_name, album.name) %>
+      <%= link_to "Downloads", downloads_path(album) %>
     </li>
 <% end %>
 

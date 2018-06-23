@@ -18,11 +18,14 @@ gem 'gon',                '~> 6.2.0'
 gem 'browser',            '~> 2.5.2'
 gem 'rubyzip',            '~> 1.2.1'
 gem 'puma',               '~> 3.10.0', group: :production
-gem 'rmagick',            '~> 2.16.0'
 gem 'aws-sdk-core',       '~> 3.7.0'
 gem 'aws-sdk-s3',         '~> 1.7.0'
 gem 'aws-sdk-cloudfront', '~> 1.1.0'
-# gem 'rack-cache'#,      '1.6.1',    group: :production
+gem 'carrierwave-aws',    '~> 1.3.0'
+gem 'cloudfront-signer',  '~> 3.0.2'
+gem 'mini_magick',        '~> 4.8.0'
+gem 'kaminari',           '~> 1.1.1'
+# gem 'rack-cache',      '1.6.1',    group: :production
 
 group :development, :test do
   gem 'pry'

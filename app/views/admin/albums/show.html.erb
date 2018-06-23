@@ -1,0 +1,41 @@
+<%= content_for :section_title do %>
+  <h3 class="panel-title pad-top pad-bottom">Album Information</h3>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row row-centered">
+    <div class="col-lg-3 col-lg-offset-4">
+      <div class="form-group">
+        <p id="notice"><%= notice %></p>
+
+        <p>
+          <strong>Number of Photos</strong><br/>
+          <%= album.photos.count %>
+        </p>
+
+        <p>
+          <strong>Title</strong><br/>
+          <%= album.title %>
+        </p>
+
+        <p>
+          <strong>Description</strong><br/>
+          <%= album.description %>
+        </p>
+
+        <p>
+          <strong>In Collection</strong><br/>
+          <%= album.collection.name %>
+        </p>
+
+        <p>
+          <strong>Album Location</strong><br/>
+          <%= album.path %>
+        </p>
+
+        <%= link_to 'Edit', edit_admin_album_path(album.id), class: "btn btn-primary btn-sm" %>
+        <%= link_to 'Back', admin_albums_path, class: "btn btn-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>

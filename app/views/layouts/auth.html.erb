@@ -25,12 +25,12 @@
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
           <li>
+            <%= link_to "Home", collections_path %>
+          </li>
+          <li>
             <%= yield :album_link %>
           </li>
           <%= yield :top_menu_item %>
-          <li>
-            <%= link_to "Home", collections_path %>
-          </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <span><%= current_user.real_name %></span>
@@ -39,13 +39,16 @@
             <ul class="dropdown-menu">
               <% if current_user.is_admin? %>
                   <li>
-                    <%= link_to "Upload Pictures", uploads_path %>
+                    <%= link_to "Upload Pictures", admin_uploads_path %>
                   </li>
                   <li>
-                    <%= link_to "Albums", albums_path %>
+                    <%= link_to "Collections", admin_collections_path %>
                   </li>
                   <li>
-                    <%= link_to "Users", users_path %>
+                    <%= link_to "Albums", admin_albums_path %>
+                  </li>
+                  <li>
+                    <%= link_to "Users", admin_users_path %>
                   </li>
               <% end %>
               <li>
@@ -56,6 +59,7 @@
         </ul>
       </div>
     </div>
+    <%= yield :section_title %>
     <%= render partial: 'flash' %>
     <%= yield %>
   </div>

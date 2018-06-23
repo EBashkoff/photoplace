@@ -1,0 +1,50 @@
+<%= content_for :section_title do %>
+  <h3 class="panel-title pad-top pad-bottom"><%= local_assigns[:title] %></h3>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row row-centered">
+    <div class="col-lg-3 col-lg-offset-4">
+      <div class="form-group pad-top">
+        <%= form_for([:admin, album], method: local_assigns[:method]) do |f| %>
+          <fieldset class="form-group">
+            <%= f.label :title %>
+            <%= f.text_field :title, class: "form-control" %>
+            <%= f.first_error :title %>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <%= f.label :description %>
+            <%= f.text_field :description, class: "form-control" %>
+            <%= f.first_error :description %>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <%= f.label 'In Collection' %><br/>
+            <%= f.select :collection,
+                         [['<New Collection>', 0]] + Collection.order(:name).all.map { |c| [c.name, c.id] },
+                         {
+                           selected: album&.collection&.id || 0,
+                           class:    "form-control disabled"
+                         }
+            %>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <%= f.label 'Album Location' %><br/>
+            <% if local_assigns[:method] == :post %>
+              <%= f.text_field :path, class: "form-control", disabled: true %>
+            <% else %>
+              <%= f.select :path,
+                           album.collection.albums.order(:path).all.map { |c| [c.path, c.id] }
+              %>
+            <% end %>
+          </fieldset>
+
+          <%= link_to 'Back', :back, class: "btn btn-primary btn-sm" %>
+          <%= submit_tag 'Save', class: "btn btn-primary btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

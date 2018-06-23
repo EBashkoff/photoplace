@@ -1,0 +1,46 @@
+<%= content_for :section_title do %>
+  <h3 class="panel-title pad-top pad-bottom"><%= local_assigns[:title] %></h3>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row row-centered">
+    <div class="col-lg-3 col-lg-offset-4">
+      <div class="form-group pad-top">
+        <%= form_for [:admin, user], method: local_assigns[:method] do |f| %>
+          <fieldset class="form-group">
+            <%= f.label :user_name %>
+            <%= f.text_field :user_name, class: "form-control" %>
+            <%= f.first_error :user_name %>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <%= f.label :real_name %>
+            <%= f.text_field :real_name, class: "form-control" %>
+            <%= f.first_error :real_name %>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <%= f.label :email %>
+            <%= f.text_field :email, class: "form-control" %>
+            <%= f.first_error :email %>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <%= f.label :password %>
+            <%= f.password_field :password, class: "form-control" %>
+            <%= f.first_error :password %>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation, class: "form-control" %>
+            <%= f.first_error :password_confirmation %>
+          </fieldset>
+
+          <%= link_to 'Back', :back, class: "btn btn-primary btn-sm" %>
+          <%= f.submit local_assigns[:submit_label], class: "btn btn-primary btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

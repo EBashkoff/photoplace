@@ -1,0 +1,31 @@
+<%= content_for :section_title do %>
+  <h3 class="panel-title pad-top pad-bottom">Collection Information</h3>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row row-centered">
+    <div class="col-lg-3 col-lg-offset-4">
+      <div class="form-group">
+        <p id="notice"><%= notice %></p>
+
+        <p>
+          <strong>Collection Name</strong><br/>
+          <%= collection.name %>
+        </p>
+
+        <p>
+          <strong>Number of Albums</strong><br/>
+          <%= collection.albums.count %>
+        </p>
+
+        <p>
+          <strong>Created At</strong><br/>
+          <%= collection.created_at.in_time_zone('EST').strftime('%B %d, %Y') %>
+        </p>
+
+        <%= link_to 'Edit', edit_admin_collection_path(collection.id), class: "btn btn-primary btn-sm" %>
+        <%= link_to 'Back', admin_collections_path, class: "btn btn-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>

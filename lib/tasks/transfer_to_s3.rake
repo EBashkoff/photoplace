@@ -32,12 +32,6 @@ task "transfer_to_s3" => :environment do
     album.assemble_album_metadata
 
     puts "Finishing uploading album resource data for #{album.title} to AWS S3 #{resource_s3_location}"
-
-    # photo_paths_all_res.values.flatten.each do |photo_path|
-    #   s3_path = photo_path.sub(Rails.application.secrets.base_photo_path + '/', "")
-    #   puts "Uploading #{photo_path} to AWS S3 #{s3_path}"
-    #   S3Wrapper.put(s3_path, IO.read("#{Rails.root}/#{photo_path}"))
-    # end
   end
 
 end

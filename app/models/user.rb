@@ -5,9 +5,9 @@ class User < ApplicationRecord
 
   before_save :update_password
 
-  validates :password, confirmation: true,
-            unless: Proc.new { |a| a.password.blank? }
+  validates :password, confirmation: true, presence: true
   validates :user_name, uniqueness: true, presence: true
+  validates :email, uniqueness: true, presence: true, format: /.*@.*\..*/
 
   self.table_name = 'wt_user'
   self.primary_key = 'user_id'
@@ -42,6 +42,13 @@ class User < ApplicationRecord
 
   def settings_hash
     @settings_hash ||= self.user_settings.pluck(:setting_name, :setting_value).to_h
+  end
+
+  def update_user(params_hash)
+    params_hash.each do |attr, value|
+      send("#{attr}=", value)
+    end
+    save
   end
 
   private

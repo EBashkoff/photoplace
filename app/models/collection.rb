@@ -1,37 +1,19 @@
-class Collection
-  attr_reader :name, :base_album_paths
+class Collection < ApplicationRecord
 
-  def self.find(collection_name)
-    new(collection_name)
-  end
+  PERMISSIBLE_COLLECTION_NAMES =
+    [
+      "house", "others", "Albums 1-4", "Albums 5-8"
+    ]
 
-  def self.reset
-    @@collections = nil
-  end
+  has_many :albums
 
-  def initialize(name)
-    @name        = name
-    @base_album_paths = Collection.base_album_paths(name)
-  end
+  validates :name, presence: true, uniqueness: true
 
-  def albums
-    @albums ||= base_album_paths.map do |album_path|
-      Album.new(self.name, album_path)
-    end.flatten.sort_by(&:name)
-  end
-
-  def self.names
-    base_album_infos.keys.map(&:to_s).sort
-  end
-
-  private
-
-  def self.base_album_infos
-    @@collections ||= S3Wrapper.get("resource.json")
-  end
-
-  def self.base_album_paths(collection_name)
-    base_album_infos[collection_name.to_sym]
+  def self.match_collection(collection_string)
+    /(\d{4}|#{PERMISSIBLE_COLLECTION_NAMES.join("|")})/i
+      .match(File.basename(collection_string)) do |m|
+      m[1]
+    end
   end
 
 end

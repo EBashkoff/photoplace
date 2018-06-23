@@ -49,18 +49,15 @@ function chosenDownloadResolution(size) {
 
     $(".thumbnail img").attr("onclick", null);
 
-    var photo_names = $("div.thumbnail img").filter(function () {
+    var photo_ids = $("div.thumbnail img").filter(function () {
         return !isImageNotSelected(this)
     }).map(function () {
         return this.id
-    });
+    }).get();
     var data = {
-        "photo_names": [],
+        "photo_ids": photo_ids.join(),
         "resolution": chosenResolution
     };
-    photo_names.each(function () {
-        data["photo_names"].push(this)
-    });
 
     var downloadQueryParams = $.param(data);
     var url = originalDownloadFormUrl + "?" + downloadQueryParams;

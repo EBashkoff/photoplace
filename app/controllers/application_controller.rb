@@ -46,7 +46,6 @@ class ApplicationController < ActionController::Base
 
   def gallery_or_album
     return "" unless request.referrer
-    puts request.referrer
     label = /\/album_(gallery|thumbs)\//.match(request.referrer) do |m|
       m[1]
     end
